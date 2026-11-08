@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
-/** Shiam: owner pharmacy/account/subscription controllers, DTOs and services. */
-@Module({})
+import { OwnerController } from './owner.controller';
+import { OwnerService } from './owner.service';
+
+@Module({ controllers: [OwnerController], providers: [OwnerService] })
 export class OwnerModule {}
