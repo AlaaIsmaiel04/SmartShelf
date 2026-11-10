@@ -1,0 +1,109 @@
+/* Public navigation is a distinct band; workspace navigation stays in its sidebar. */
+.public-shell .app-topbar {
+  max-width: none;
+  min-height: 88px;
+  padding: 20px max(24px, calc((100% - 1296px) / 2));
+  background: var(--sidebar);
+  color: #f5f6e9;
+  border-bottom: 1px solid #456655;
+  justify-content: flex-start;
+  gap: 28px;
+}
+.public-shell .app-topbar > .brand {
+  color: inherit;
+  font-size: 25px;
+}
+.public-shell .app-topbar > nav {
+  width: auto;
+}
+.public-shell .app-topbar > nav ul {
+  justify-content: flex-start;
+  gap: 6px;
+}
+.public-shell .app-topbar nav a {
+  color: #f5f6e9;
+  padding: 10px 14px;
+}
+.public-shell .app-topbar nav a:hover {
+  background: #2b5143;
+}
+.public-shell .app-topbar nav a.active,
+.public-shell .app-topbar nav a[href='/login'] {
+  background: var(--mint);
+  color: var(--sidebar);
+}
+.public-shell .app-topbar nav a.active:hover,
+.public-shell .app-topbar nav a[href='/login']:hover {
+  background: #cbdcb8;
+}
+.public-shell .app-topbar :focus-visible {
+  outline-color: var(--gold);
+}
+.public-signin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 18px;
+  border-radius: var(--radius-control);
+  background: var(--mint);
+  color: var(--sidebar);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.public-signin:hover {
+  background: #cbdcb8;
+}
+@media (max-width: 1100px) {
+  .public-shell .app-topbar {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .public-shell .app-topbar > nav {
+    order: 3;
+    width: 100%;
+  }
+  .public-shell .app-topbar > nav ul {
+    justify-content: center;
+  }
+}
+@media (max-width: 600px) {
+  .public-shell .app-topbar {
+    padding: 20px 16px;
+  }
+  .public-shell .app-topbar > .brand {
+    flex-basis: 100%;
+    justify-content: center;
+  }
+  .public-shell .app-topbar > .display-preferences {
+    margin-inline-start: auto;
+    margin-inline-end: 0;
+    gap: 8px;
+  }
+  .public-shell .display-preferences .language-switch {
+    grid-template-columns: repeat(2, 50px);
+  }
+  .public-shell .app-topbar {
+    gap: 10px;
+  }
+  .public-signin {
+    padding-inline: 12px;
+    font-size: 12px;
+  }
+  .public-signin > svg {
+    display: none;
+  }
+  .public-shell .app-topbar > nav ul {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .public-shell .app-topbar nav a {
+    min-height: 44px;
+    font-size: 12px;
+    padding-inline: 8px;
+  }
+}

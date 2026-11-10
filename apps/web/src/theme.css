@@ -1,55 +1,19 @@
-/* The theme control sits beside the language control in both headers. */
-.theme-control {
-  flex-shrink: 0;
-}
-.theme-control select {
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-control);
-  padding: 9px 22px;
-  color: var(--foreground);
-  font-size: 12px;
-  min-height: 44px;
-  max-width: 100%;
-  font-family: inherit;
-  cursor: pointer;
-}
-.display-preferences {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-shrink: 0;
-  margin-inline-start: auto;
-}
-@media (max-width: 760px) {
-  .theme-control select {
-    padding: 5px 14px;
-  }
-  .workspace-shell .app-topbar {
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  .workspace-shell .app-topbar > span {
-    flex-basis: 100%;
-  }
-}
-
 /*
  * Dark theme: colors only, no layout. Alaa's rules pair --surface as text with --primary
  * as background, so a light --primary and a dark --surface keep those pairs readable.
  */
 :root[data-theme='dark'] {
   color-scheme: dark;
-  --background: #0f1c18;
-  --surface: #16261f;
+  --background: #1b2226;
+  --surface: #222a37;
   --foreground: #e9efe4;
   --primary: #93d4b4;
   --primary-hover: #aee2c8;
   --sidebar: #193f34;
   --mint: #d8e9c5;
   --gold: #e9d6a0;
-  --muted: #aebdb3;
-  --border: #33473c;
+  --muted: #b7c1d0;
+  --border: #465268;
   --danger: #ffa193;
   --danger-soft: #4a211b;
   --warning: #f0c56f;
@@ -60,13 +24,13 @@
   --info-soft: #1c3442;
   --dark-on-sidebar: #f5f6e9;
   --dark-on-light: #12211b;
-  --dark-input: #101e19;
-  --dark-input-border: #7a9082;
-  --dark-raised: #1b2e25;
-  --dark-raised-hover: #233a2f;
+  --dark-input: #1b222e;
+  --dark-input-border: #8391a6;
+  --dark-raised: #283243;
+  --dark-raised-hover: #303d51;
 }
 
-/* --sidebar stays green, so text that used --surface on it must stay light. */
+/* Text on the dark-green sidebar and hero surfaces stays light. */
 :root[data-theme='dark'] .workspace-sidebar,
 :root[data-theme='dark'] .workspace-sidebar .brand,
 :root[data-theme='dark'] .home-hero,
@@ -74,6 +38,19 @@
 :root[data-theme='dark'] .app-shell .auth-story,
 :root[data-theme='dark'] .public-placeholder {
   color: var(--dark-on-sidebar);
+}
+:root[data-theme='dark'] .sidebar-message {
+  background: var(--dark-raised);
+}
+:root[data-theme='dark'] .sidebar-identity,
+:root[data-theme='dark'] .sidebar-preferences,
+:root[data-theme='dark'] .sidebar-collapse-toggle {
+  border-color: var(--border);
+}
+:root[data-theme='dark'] .sidebar-collapse-toggle:hover,
+:root[data-theme='dark'] .sidebar-preferences .display-switch:hover,
+:root[data-theme='dark'] .app-shell .workspace-nav a:not(.active):hover {
+  background: var(--dark-raised-hover);
 }
 :root[data-theme='dark'] .public-placeholder {
   background: var(--sidebar);
@@ -111,9 +88,6 @@
   .app-shell
   :is(.inventory-medicines, .owner-pharmacy-list)
   > li:nth-child(odd) {
-  background: var(--dark-raised);
-}
-:root[data-theme='dark'] .app-shell .attention-list > li:hover {
   background: var(--dark-raised);
 }
 :root[data-theme='dark']

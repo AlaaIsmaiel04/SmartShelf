@@ -259,9 +259,6 @@ h4 {
 .app-shell .attention-list > li {
   padding-block: 22px;
 }
-.app-shell .attention-list > li:hover {
-  background: #f7f9f1;
-}
 .public-shell .public-page {
   max-width: 1240px;
 }

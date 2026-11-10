@@ -5,7 +5,15 @@ export type InterfaceIconName =
   | 'dashboard'
   | 'inventory'
   | 'profile'
-  | 'signin';
+  | 'signin'
+  | 'signout'
+  | 'sidebar'
+  | 'language'
+  | 'system'
+  | 'light'
+  | 'dark'
+  | 'check'
+  | 'chevron';
 
 // One shared stroke family. Icons decorate existing text labels.
 export function InterfaceIcon({ name }: { name: InterfaceIconName }) {
@@ -58,6 +66,37 @@ export function InterfaceIcon({ name }: { name: InterfaceIconName }) {
           <path d="M14 4h6v16h-6M3 12h12m-4-4 4 4-4 4" />
         </>
       )}
+      {name === 'language' && (
+        <>
+          <circle cx="12" cy="12" r="9" />
+          <ellipse cx="12" cy="12" rx="4" ry="9" />
+          <path d="M3 12h18" />
+        </>
+      )}
+      {name === 'system' && (
+        <>
+          <rect x="3" y="4" width="18" height="12" rx="2" />
+          <path d="M12 16v4m-4 0h8" />
+        </>
+      )}
+      {name === 'light' && (
+        <>
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5" />
+        </>
+      )}
+      {name === 'dark' && (
+        <path d="M20.5 14A9 9 0 0 1 10 3.5 9 9 0 1 0 20.5 14Z" />
+      )}
+      {name === 'chevron' && <path d="m7 10 5 5 5-5" />}
+      {name === 'sidebar' && (
+        <>
+          <rect x="3" y="4" width="18" height="16" rx="3" />
+          <path d="M9 4v16" />
+        </>
+      )}
+      {name === 'signout' && <path d="M10 4H4v16h6m0-8h11m-4-4 4 4-4 4" />}
+      {name === 'check' && <path d="m5 12 4 4L19 6" />}
     </svg>
   );
 }
@@ -66,31 +105,16 @@ export function CareSymbol() {
   return (
     <svg
       className="care-symbol"
-      viewBox="0 0 180 180"
+      viewBox="0 0 24 24"
       fill="none"
+      stroke="currentColor"
+      strokeWidth="1"
       aria-hidden="true"
     >
-      <circle cx="90" cy="90" r="77" stroke="currentColor" strokeOpacity=".2" />
-      <rect
-        x="62"
-        y="28"
-        width="56"
-        height="124"
-        rx="28"
-        transform="rotate(38 90 90)"
-        fill="currentColor"
-        fillOpacity=".12"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <path d="m68 73 44 34" stroke="currentColor" strokeWidth="2" />
-      <path
-        d="M138 30v20m-10-10h20"
-        stroke="currentColor"
-        strokeWidth="3"
-        strokeLinecap="round"
-      />
-      <circle cx="33" cy="132" r="6" fill="currentColor" />
+      <g transform="rotate(38 12 12)">
+        <rect x="7" y="2" width="10" height="20" rx="5" />
+        <path d="M7 12h10" />
+      </g>
     </svg>
   );
 }
