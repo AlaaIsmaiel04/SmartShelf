@@ -22,6 +22,7 @@ import {
   SubscriptionDto,
 } from './dto/owner.dto';
 import { ownerPharmacyResponse, subscriptionResponse } from './owner.mapper';
+import { escapeLikePattern } from '../pharmacy/adapters/like-pattern';
 
 @Injectable()
 export class OwnerService {
@@ -34,7 +35,9 @@ export class OwnerService {
     const today = businessDate();
     const pharmacies = await this.prisma.pharmacy.findMany({
       where: query.q
-        ? { name: { contains: query.q, mode: 'insensitive' } }
+        ? {
+            name: { contains: escapeLikePattern(query.q), mode: 'insensitive' },
+          }
         : {},
       include: { subscription: true },
       orderBy: [{ name: 'asc' }, { id: 'asc' }],

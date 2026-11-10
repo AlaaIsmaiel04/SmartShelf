@@ -9,6 +9,30 @@ import {
 } from '../../common/business-date';
 import { OwnerService } from './owner.service';
 
+test('owner name searches escape PostgreSQL wildcard and escape characters', async () => {
+  for (const [q, expected] of [
+    ['%', '\\%'],
+    ['_', '\\_'],
+    ['\\', '\\\\'],
+    ['A%_\\B', 'A\\%\\_\\\\B'],
+    ['ordinary', 'ordinary'],
+  ]) {
+    let actual: unknown;
+    const service = new OwnerService({
+      pharmacy: {
+        findMany: async (input: unknown) => {
+          actual = input;
+          return [];
+        },
+      },
+    } as unknown as PrismaService);
+    await service.listPharmacies({ q });
+    assert.deepEqual((actual as { where: unknown }).where, {
+      name: { contains: expected, mode: 'insensitive' },
+    });
+  }
+});
+
 test('list filters by calculated status after mapping and returns the filtered total', async () => {
   const today = businessDate();
   const pharmacy = {
