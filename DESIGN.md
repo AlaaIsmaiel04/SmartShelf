@@ -8,7 +8,7 @@ The shared shell, sign-in, owner pharmacy/account/subscription screens, and medi
 
 ## Shared foundations
 
-- Base theme variables live in `apps/web/src/styles.css`, with the cream/forest refinement layer in `apps/web/src/refresh.css`: warm cream background, off-white surfaces, deep green text/sidebar, green actions and pale mint active navigation. The gold token remains a restrained secondary accent.
+- Base theme variables live in `apps/web/src/styles.css`, with the cream/forest refinement layer in `apps/web/src/refresh.css`: warm cream background, off-white surfaces, deep green text/sidebar, green actions and pale mint active navigation. Gold remains a restrained secondary accent.
 - Cairo is served locally from `apps/web/public/fonts/`; its SIL Open Font License is included there. The exports use Cairo as their Arabic font fallback. No external font request is required.
 - Controls use a 12px radius and at least 44px height; panels use a 20px radius. Spacing follows an 8px base.
 - Use textual status labels alongside color. Muted/error text is darker than the source swatches for readability.
@@ -16,7 +16,7 @@ The shared shell, sign-in, owner pharmacy/account/subscription screens, and medi
 
 ## Layout and components
 
-`AppShell` owns role navigation, brand, sidebar, mobile menu, main landmark, skip link and footer. Keep feature behavior inside feature components. The language select is functional through LanguageProvider. Do not add dead controls for unimplemented theme settings.
+`AppShell` owns role navigation, brand, sidebar, mobile menu, main landmark, skip link and footer. Keep feature behavior inside feature components. Direct English/العربية and sun/moon switches use LanguageProvider and ThemeProvider; there are no preference dropdowns or popovers.
 
 Desktop workspaces have a 248px sidebar on the left in English and right in Arabic. Navigation collapses behind Menu at 760px; Escape closes it and restores toggle focus. Lists adapt to labelled cards by 1050px, with intermediate column adjustments at 1180px. Forms stack on narrow screens. Login uses two desktop columns and puts the form first on mobile.
 
@@ -89,8 +89,12 @@ in `output/home/motion-checks.json`.
 
 ## Connected display preferences - 7 November 2026
 
-Hamid's theme is connected through ThemeProvider and ThemeControl in both application headers. Light retains cream/forest; Dark uses the supplied deep green surfaces with mint controls. System is the default and follows live device changes; manual choices persist independently of language. The inline head script applies the theme before the app module executes. A mandatory test guards its presence and order.
+Hamid's theme foundation is connected through ThemeProvider and ThemeControl. Light retains cream/forest; Dark uses the original dark-green canvas (`#0F1C18`), panels (`#16261F`), sidebar (`#193F34`) and mint actions. The palette experiments were reverted at Alaa's request; sidebar and switch behavior are preserved. Status surfaces retain their semantic colors. System is the default and follows live device changes until a manual choice is saved independently of language. The inline head script applies the theme before the app module executes. A mandatory test guards its presence and order.
 
-The two selects form one wrapping header group. Mobile workspace headings use their own row so theme/language controls remain reachable. Shared tokens cover home, search, directory, login, owner/inventory and pharmacist pages, with EN/AR direction intact. Theme/language changes preserve form drafts and the in-memory signed-in session. No theme-change animation or new animation dependency is introduced.
+Workspace preference switches live at the bottom of the sidebar. The collapsed rail shows compact language and sun/moon buttons with accessible labels and titles; phones keep both switches inside the sidebar above the page content. Public pages retain their header controls. Shared tokens cover home, search, directory, login, owner/inventory and pharmacist pages, with EN/AR direction intact. Theme/language changes preserve form drafts and the in-memory signed-in session. No theme-change animation or new animation dependency is introduced.
+
+On 8 November the controls were simplified to direct switches: English/العربية and sun/moon, with a sliding selected background. Theme follows the device until a saved or manually selected Light/Dark preference is present; System is no longer a choice in the control. Both switches support Tab, Enter/Space, saved preferences and reduced motion.
+
+The desktop sidebar toggles between a 248px column and an 88px column (72px visible rail plus outer spacing), using a 300ms grid transition. Icons, active state, accessible link names, native title tooltips and sign-out remain available while collapsed. Arabic mirrors the rail; phones retain the existing Menu navigation instead of losing content width. Reduced motion removes the layout transition. Signed-in pharmacist search retains the sidebar; Home, Pharmacies and the promotional sidebar message are omitted from pharmacist workspaces. Browser checks cover real sign-in, navigation while collapsed, interrupted/repeated toggles, both themes/languages, keyboard operation and 320/390/768/1024/1440px widths.
 
 Browser evidence in `output/theme/browser-checks.json` covers persistence, System changes, blocked storage, first paint, keyboard/focus, draft/session preservation, rendered text contrast and EN/AR responsive layouts. Owner/account/subscription and stock-form cases use development previews; public search and pharmacist reads use an isolated PostgreSQL database. Real owner onboarding and physical-device/team rehearsal remain pending. Hamid's persisted public stock adapter is now merged.

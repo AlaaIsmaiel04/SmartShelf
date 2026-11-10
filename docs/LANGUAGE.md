@@ -4,7 +4,7 @@ Alaa took over Hamid's Day 11 task at the user's request on 4 November 2026. The
 
 ## Implemented
 
-- Native, keyboard-accessible language select in the public and workspace headers.
+- Direct English/العربية button switch in the public and workspace headers, with a sliding selected background and localized action label. Tab and Enter/Space work without opening a dropdown.
 - Persistent English/Arabic preference, safe fallback to English if browser storage is unavailable or contains an invalid value.
 - Typed translation keys with English defaults and Arabic copy for navigation, shared shell/footer, sign-in, known sign-in/session messages, existing route placeholders, and the owner/inventory screens and forms.
 - Document `lang` and `dir` set on startup and updated before paint on selection. Arabic mirrors the workspace sidebar and direction-aware grids; English restores the original layout.
@@ -33,4 +33,4 @@ On 5 November 2026, Arabic owner/inventory workflows passed browser checks: sear
 
 The earlier check counts above describe the original language rollout. The current app has 23 passing frontend tests, including language fallback/interpolation and theme storage/system behavior. `ThemeProvider` sits inside `LanguageProvider`; `theme.css` loads after the shared styling, and the inline boot script restores the theme before React loads.
 
-Light/Dark/System labels are available in both languages. Theme changes preserve unsaved forms and the in-memory sign-in session. Saved theme and language are independent; System follows live device changes. Blocked storage leaves both controls usable with safe fallbacks. Browser checks cover EN/AR, both themes, keyboard controls, first-paint theme, draft/session preservation and 320/390/768/1024/1440 layouts. Evidence: `output/theme/browser-checks.json`. Owner form evidence uses previews; public/pharmacist reads use a separate real database. Full owner integration and team rehearsal remain pending.
+The current headers use direct sun/moon and English/العربية switches. Theme follows the device by default until a Light/Dark preference is saved; there is no longer a System dropdown choice. Theme changes preserve unsaved forms and the in-memory sign-in session. Saved theme and language are independent. Blocked storage leaves both controls usable with safe fallbacks. The original integration checks cover EN/AR, both themes, keyboard controls, first-paint theme, draft/session preservation and 320/390/768/1024/1440 layouts. Evidence: `output/theme/browser-checks.json`. Owner form evidence uses previews; public/pharmacist reads use a separate real database. Full owner integration and team rehearsal remain pending.

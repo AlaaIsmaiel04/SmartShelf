@@ -6,6 +6,8 @@ import { AuthProvider } from './features/auth/AuthProvider';
 import './styles.css';
 import './refresh.css';
 import './theme.css';
+import './components/workspace.css';
+import './components/public-header.css';
 import { LanguageProvider } from './features/preferences/LanguageProvider';
 import { ThemeProvider } from './features/preferences/ThemeProvider';
 import {
