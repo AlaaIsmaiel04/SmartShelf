@@ -76,3 +76,18 @@ subscription route; and mobile layout. Day 3 checks were also rerun.
 Before final integration, verify real account sign-in, password hashing,
 subscription persistence, backend access restrictions and preservation of all
 pharmacy records after subscription deletion with Mustafa and Shiam.
+
+## Days 8–9: real integration — 10 November 2026
+
+The earlier mock-only verification is historical. Shiam's owner endpoints are merged.
+The owner service now uses the shared authenticated API client and preserves real
+400/403/404/409 server messages; 401 invalidates the session and 204 does not parse
+a body. Five frontend regression tests cover these behaviors, request methods,
+filters, cancellation and network failures.
+
+Real browser acceptance covers pharmacy/account/subscription creation, duplicate
+email feedback, new account sign-in, stock creation/editing, owner view refresh,
+suspension/reactivation, future/expired dates, delete cancellation/confirmation,
+read-only stock, public visibility and subscription recreation. API/database checks
+verify retained accounts/stock/duty and password hashing. See
+[Days 8–9 verification](../../../../../docs/DAY-8-9-VERIFICATION.md).

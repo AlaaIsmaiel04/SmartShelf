@@ -1,4 +1,12 @@
 export const featureArabic = {
+  'Pharmacy not found.': 'الصيدلية غير موجودة.',
+  'Subscription not found.': 'الاشتراك غير موجود.',
+  'An account with this email already exists.':
+    'يوجد حساب بهذا البريد الإلكتروني بالفعل.',
+  'This pharmacy already has a subscription.':
+    'يوجد اشتراك لهذه الصيدلية بالفعل.',
+  'endDate must be after startDate.':
+    'يجب أن يكون تاريخ الانتهاء بعد تاريخ البدء.',
   'Subscription is ACTIVE. Changes are not allowed.':
     'حالة الاشتراك نشط. التغييرات غير مسموحة.',
   'Subscription is EXPIRED. Changes are not allowed.':

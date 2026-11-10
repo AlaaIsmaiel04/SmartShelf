@@ -1,0 +1,315 @@
+{
+  "branch": "alaa",
+  "baseline": "92fd554",
+  "date": "2026-11-10",
+  "checks": [
+    {
+      "method": "POST",
+      "url": "/auth/login",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "url": "/auth/login",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "/owner/pharmacies",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "url": "/owner/pharmacies",
+      "status": 403
+    },
+    {
+      "method": "POST",
+      "url": "/owner/pharmacies",
+      "status": 401
+    },
+    {
+      "method": "POST",
+      "url": "/owner/pharmacies",
+      "status": 403
+    },
+    {
+      "method": "POST",
+      "url": "/owner/pharmacists",
+      "status": 401
+    },
+    {
+      "method": "POST",
+      "url": "/owner/pharmacists",
+      "status": 403
+    },
+    {
+      "method": "POST",
+      "url": "/owner/pharmacies/d8b9d659-2f77-4592-8e30-c23b9a3d0bfd/subscription",
+      "status": 401
+    },
+    {
+      "method": "POST",
+      "url": "/owner/pharmacies/d8b9d659-2f77-4592-8e30-c23b9a3d0bfd/subscription",
+      "status": 403
+    },
+    {
+      "method": "PATCH",
+      "url": "/owner/pharmacies/d8b9d659-2f77-4592-8e30-c23b9a3d0bfd/subscription",
+      "status": 401
+    },
+    {
+      "method": "PATCH",
+      "url": "/owner/pharmacies/d8b9d659-2f77-4592-8e30-c23b9a3d0bfd/subscription",
+      "status": 403
+    },
+    {
+      "method": "DELETE",
+      "url": "/owner/pharmacies/d8b9d659-2f77-4592-8e30-c23b9a3d0bfd/subscription",
+      "status": 401
+    },
+    {
+      "method": "DELETE",
+      "url": "/owner/pharmacies/d8b9d659-2f77-4592-8e30-c23b9a3d0bfd/subscription",
+      "status": 403
+    },
+    {
+      "method": "GET",
+      "url": "/owner/pharmacies?status=INVALID",
+      "status": 400
+    },
+    {
+      "method": "GET",
+      "url": "/owner/pharmacies?extra=x",
+      "status": 400
+    },
+    {
+      "method": "POST",
+      "url": "/owner/pharmacies",
+      "status": 400
+    },
+    {
+      "method": "POST",
+      "url": "/owner/pharmacies",
+      "status": 400
+    },
+    {
+      "method": "POST",
+      "url": "/owner/pharmacies",
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "url": "/owner/pharmacists",
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "url": "/owner/pharmacists",
+      "status": 409
+    },
+    {
+      "method": "POST",
+      "url": "/owner/pharmacists",
+      "status": 404
+    },
+    {
+      "method": "POST",
+      "url": "/owner/pharmacists",
+      "status": 400
+    },
+    {
+      "method": "POST",
+      "url": "/auth/login",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "url": "/owner/pharmacies/ab90e058-2fa8-430a-9cd5-971b18234b96/subscription",
+      "status": 400
+    },
+    {
+      "method": "POST",
+      "url": "/owner/pharmacies/ab90e058-2fa8-430a-9cd5-971b18234b96/subscription",
+      "status": 400
+    },
+    {
+      "method": "POST",
+      "url": "/owner/pharmacies/ab90e058-2fa8-430a-9cd5-971b18234b96/subscription",
+      "status": 400
+    },
+    {
+      "method": "POST",
+      "url": "/owner/pharmacies/ab90e058-2fa8-430a-9cd5-971b18234b96/subscription",
+      "status": 400
+    },
+    {
+      "method": "POST",
+      "url": "/owner/pharmacies/not-a-uuid/subscription",
+      "status": 400
+    },
+    {
+      "method": "POST",
+      "url": "/owner/pharmacies/d8b9d659-2f77-4592-8e30-c23b9a3d0bfd/subscription",
+      "status": 404
+    },
+    {
+      "method": "PATCH",
+      "url": "/owner/pharmacies/ab90e058-2fa8-430a-9cd5-971b18234b96/subscription",
+      "status": 404
+    },
+    {
+      "method": "DELETE",
+      "url": "/owner/pharmacies/ab90e058-2fa8-430a-9cd5-971b18234b96/subscription",
+      "status": 404
+    },
+    {
+      "method": "POST",
+      "url": "/owner/pharmacies/ab90e058-2fa8-430a-9cd5-971b18234b96/subscription",
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "url": "/owner/pharmacies/ab90e058-2fa8-430a-9cd5-971b18234b96/subscription",
+      "status": 409
+    },
+    {
+      "method": "POST",
+      "url": "/pharmacist/medicines",
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "url": "/pharmacist/medicines/9e5a6638-c2c4-4095-b695-b60dea4c48e3/batches",
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "url": "/pharmacist/duty-periods",
+      "status": 201
+    },
+    {
+      "method": "GET",
+      "url": "/public/medicines?q=Review%20Medicine",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "/owner/pharmacies?q=Review%20Pharmacy&status=ACTIVE",
+      "status": 200
+    },
+    {
+      "method": "PATCH",
+      "url": "/owner/pharmacies/ab90e058-2fa8-430a-9cd5-971b18234b96/subscription",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "/owner/pharmacies?q=Review%20Pharmacy&status=SUSPENDED",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "/public/medicines?q=Review%20Medicine",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "/pharmacist/medicines",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "url": "/pharmacist/medicines",
+      "status": 403
+    },
+    {
+      "method": "PATCH",
+      "url": "/owner/pharmacies/ab90e058-2fa8-430a-9cd5-971b18234b96/subscription",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "/public/medicines?q=Review%20Medicine",
+      "status": 200
+    },
+    {
+      "method": "PATCH",
+      "url": "/owner/pharmacies/ab90e058-2fa8-430a-9cd5-971b18234b96/subscription",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "/owner/pharmacies?q=Review%20Pharmacy&status=EXPIRED",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "/public/medicines?q=Review%20Medicine",
+      "status": 200
+    },
+    {
+      "method": "PATCH",
+      "url": "/owner/pharmacies/ab90e058-2fa8-430a-9cd5-971b18234b96/subscription",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "/owner/pharmacies?q=Review%20Pharmacy&status=SUSPENDED",
+      "status": 200
+    },
+    {
+      "method": "PATCH",
+      "url": "/owner/pharmacies/ab90e058-2fa8-430a-9cd5-971b18234b96/subscription",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "/owner/pharmacies?q=Review%20Pharmacy&status=NONE",
+      "status": 200
+    },
+    {
+      "method": "PATCH",
+      "url": "/owner/pharmacies/ab90e058-2fa8-430a-9cd5-971b18234b96/subscription",
+      "status": 200
+    },
+    {
+      "method": "DELETE",
+      "url": "/owner/pharmacies/ab90e058-2fa8-430a-9cd5-971b18234b96/subscription",
+      "status": 204
+    },
+    {
+      "method": "GET",
+      "url": "/owner/pharmacies?q=Review%20Pharmacy&status=NONE",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "/public/medicines?q=Review%20Medicine",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "/pharmacist/medicines",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "url": "/pharmacist/medicines",
+      "status": 403
+    },
+    {
+      "method": "POST",
+      "url": "/owner/pharmacies/ab90e058-2fa8-430a-9cd5-971b18234b96/subscription",
+      "status": 201
+    },
+    {
+      "method": "GET",
+      "url": "/owner/pharmacies?q=%25",
+      "status": 200
+    }
+  ],
+  "findings": [],
+  "dataPreserved": true,
+  "browserErrors": []
+}
