@@ -226,18 +226,6 @@ export function AppShell({ children }: { children: ReactNode }) {
             >
               <p className="nav-label">{t('Your workspace')}</p>
               <ul>{navigation}</ul>
-              {!pharmacist && (
-                <div className="sidebar-message">
-                  <strong>
-                    {t('Safer shelves.')}
-                    <br />
-                    {t('Every day.')}
-                  </strong>
-                  <p>
-                    {t('Review stock and expiry dates before your next shift.')}
-                  </p>
-                </div>
-              )}
               <div className="sidebar-identity">
                 <strong>
                   {preview

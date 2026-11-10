@@ -347,11 +347,15 @@ export function InventoryView({ service }: { service: InventoryService }) {
                         </div>
                         <div>
                           <dt>{t('Available quantity')}</dt>
-                          <dd>{medicine.availableQuantity}</dd>
+                          <dd className="numeric-value">
+                            {medicine.availableQuantity}
+                          </dd>
                         </div>
                         <div>
                           <dt>{t('Reorder threshold')}</dt>
-                          <dd>{medicine.reorderThreshold}</dd>
+                          <dd className="numeric-value">
+                            {medicine.reorderThreshold}
+                          </dd>
                         </div>
                       </dl>
                       <details className="inventory-batches">
@@ -372,7 +376,9 @@ export function InventoryView({ service }: { service: InventoryService }) {
                               <li key={batch.id}>
                                 <h4>
                                   {t('Batch')}{' '}
-                                  <bdi dir="ltr">{batch.batchNumber}</bdi>
+                                  <bdi dir="ltr" className="numeric-value">
+                                    {batch.batchNumber}
+                                  </bdi>
                                 </h4>
                                 <button
                                   type="button"
@@ -393,7 +399,9 @@ export function InventoryView({ service }: { service: InventoryService }) {
                                 <dl className="inventory-facts">
                                   <div>
                                     <dt>{t('Quantity')}</dt>
-                                    <dd>{batch.quantity}</dd>
+                                    <dd className="numeric-value">
+                                      {batch.quantity}
+                                    </dd>
                                   </div>
                                   <div>
                                     <dt>{t('Expiry date')}</dt>
@@ -412,7 +420,9 @@ export function InventoryView({ service }: { service: InventoryService }) {
                                   </div>
                                   <div>
                                     <dt>{t('Unit cost')}</dt>
-                                    <dd dir="ltr">{batch.unitCost}</dd>
+                                    <dd dir="ltr" className="numeric-value">
+                                      {batch.unitCost}
+                                    </dd>
                                   </div>
                                   <div>
                                     <dt>{t('Barcode')}</dt>

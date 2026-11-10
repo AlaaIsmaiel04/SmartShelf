@@ -98,3 +98,25 @@ On 8 November the controls were simplified to direct switches: English/العر�
 The desktop sidebar toggles between a 248px column and an 88px column (72px visible rail plus outer spacing), using a 300ms grid transition. Icons, active state, accessible link names, native title tooltips and sign-out remain available while collapsed. Arabic mirrors the rail; phones retain the existing Menu navigation instead of losing content width. Reduced motion removes the layout transition. Signed-in pharmacist search retains the sidebar; Home, Pharmacies and the promotional sidebar message are omitted from pharmacist workspaces. Browser checks cover real sign-in, navigation while collapsed, interrupted/repeated toggles, both themes/languages, keyboard operation and 320/390/768/1024/1440px widths.
 
 Browser evidence in `output/theme/browser-checks.json` covers persistence, System changes, blocked storage, first paint, keyboard/focus, draft/session preservation, rendered text contrast and EN/AR responsive layouts. Owner/account/subscription and stock-form cases use development previews; public search and pharmacist reads use an isolated PostgreSQL database. Real owner onboarding and physical-device/team rehearsal remain pending. Hamid's persisted public stock adapter is now merged.
+
+
+## Parchment, botanical green and saffron — 10 November 2026
+
+This update supersedes earlier palette and typography choices above. Alaa requested
+the supplied SmartShelf reference's warm parchment canvas, cream-white surfaces,
+deep botanical navigation and restrained saffron selection/action highlights.
+Existing routes, role permissions, forms, language providers and theme behavior remain.
+
+- `visual-language.css` owns current light/dark semantic colors and maps them to
+  Tailwind v4 theme utilities via the Vite plugin. Preflight is omitted to preserve
+  existing form/dialog behavior. Existing feature styles still own layout.
+- Local font packages supply Plus Jakarta Sans for Latin, Noto Kufi Arabic for
+  Arabic, and IBM Plex Mono for codes, dates and numeric values. Arabic remains
+  conditional on the language preference, with logical spacing and RTL preserved.
+- Shared InterfaceIcon/CareSymbol wrappers now use Lucide React. The shared API
+  remains stable for feature components.
+- Warm borders, 16px panel corners and subtle green-tinted shadows separate
+  surfaces. Saffron identifies active navigation and welcome-page actions;
+  semantic error/warning/success indicators retain their meanings.
+- Dark mode pairs warm charcoal surfaces with the botanical navigation. Reduced
+  motion disables entrance/transition effects. No promotional sidebar card returns.

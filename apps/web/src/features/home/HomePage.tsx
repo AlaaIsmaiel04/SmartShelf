@@ -1,3 +1,4 @@
+import { ArrowRight, Pill } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { InterfaceIcon } from '../../components/InterfaceIcon';
@@ -95,35 +96,21 @@ export function HomePage() {
             <Link className="button home-primary" to={choice.to}>
               <InterfaceIcon name={choice.icon} />
               {choice.action}
-              <svg
+              <ArrowRight
                 className="home-link-arrow"
+                size={20}
+                strokeWidth={1.65}
                 aria-hidden="true"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.65"
-              >
-                <path d="M4 12h15m-6-6 6 6-6 6" />
-              </svg>
+              />
             </Link>
           </div>
           <div className="home-feature-symbol" aria-hidden="true">
             {active === 0 ? (
-              <svg
+              <Pill
                 className="interface-icon"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1"
+                strokeWidth={1}
                 aria-hidden="true"
-              >
-                <g transform="rotate(38 12 12)">
-                  <rect x="7" y="2" width="10" height="20" rx="5" />
-                  <path d="M7 12h10" />
-                </g>
-              </svg>
+              />
             ) : (
               <InterfaceIcon name={choice.icon} />
             )}
