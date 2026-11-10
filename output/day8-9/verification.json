@@ -1,0 +1,48 @@
+{
+  "date": "2026-11-10",
+  "branch": "alaa",
+  "baseline": "92fd554",
+  "scope": "Day 8 and Day 9 real owner integration",
+  "sourceHashes": {
+    "apps/web/src/features/owner/owner-api.ts": "750d53b7dfb7cd85656435f0fe25b2b4f060bcba0ad010086910754eca5cbda1",
+    "apps/web/src/features/owner/owner.test.ts": "3f995e024d1e49a683a2c1671aab050144f62216ff22d5b519fca90d3f5de82d",
+    "apps/web/src/locales/feature-messages.ts": "6b8eada61970da9d8d016e8572876d2cd2a4d5d93a04a979f43503f88896abf4",
+    "apps/api/prisma/schema.prisma": "e1121e3d79373c1671ca2f11f15b5b210be0d674e38ee8a11a4dfe4d99911390"
+  },
+  "results": {
+    "typecheck": "PASS",
+    "productionBuild": "PASS",
+    "apiUnitTests": {
+      "passed": 489,
+      "databaseGroupsSkipped": 4
+    },
+    "frontendTests": {
+      "passed": 28,
+      "newOwnerTests": 5
+    },
+    "postgresIntegrationTests": {
+      "passed": 48,
+      "failed": 0,
+      "skipped": 0
+    },
+    "additionalApiChecks": 61,
+    "browserWorkflowGroups": 13,
+    "browserErrors": [],
+    "smoke": "PASS",
+    "repositoryAudit": "PASS"
+  },
+  "databaseIsolation": {
+    "developmentDataChanged": false,
+    "credentialsChanged": false,
+    "databaseReset": false,
+    "existingDatabasesPreserved": true
+  },
+  "method": "Existing generated Prisma client for unchanged schema; fresh isolated migration and direct execution of the four integration spec files because the running API locked the engine DLL during generate.",
+  "remaining": [
+    "Independent second-laptop setup",
+    "Actual team acceptance session",
+    "Six-member English rehearsal and presentation"
+  ],
+  "committed": false,
+  "pushed": false
+}

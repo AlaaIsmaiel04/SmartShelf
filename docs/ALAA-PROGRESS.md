@@ -1,21 +1,30 @@
-# Current integration update - 7 November 2026
+# Current integration update — 10 November 2026
 
-This update supersedes the dependency statements and test counts in the historical notes below. Mustafa's schema/authentication/inventory foundation and Mohammad's dashboard/profile/duty implementation are integrated. Hamid's latest work and the public PostgreSQL runner fix are merged through PR #18 (`50e1a79`).
+This update supersedes all dependency statements in the historical checkpoints below. Shiam's owner backend and search/acceptance fixes are merged, alongside Mustafa's authentication/inventory, Mohammad's dashboard/profile integration and Hamid's duty/public APIs. Baseline: merged main `92fd554`, plus the uncommitted Day 8–9 integration follow-up.
 
-- Dashboard reads persisted own-pharmacy stock, all seven metrics and attention badges; it refreshes on focus, navigation and inventory changes.
-- Profile and duty screens use live JWT/Prisma APIs, inactive reads and restricted writes. Duty writes use a PostgreSQL row lock across API instances.
-- Public search now reads real stock. ACTIVE subscriptions, positive/nonexpired matching batches, combined filters, deduplication, literal query characters and exact public fields are covered by database tests. The real search and directory browser flows work.
-- Hamid's Light/Dark/System implementation is connected in public and workspace headers. It applies the saved/system theme before paint, follows live device preference changes and preserves drafts/authentication. Both themes support EN/AR and RTL.
-- Typecheck/build pass; 485 API unit tests and 23 frontend tests pass. All 36 separate PostgreSQL acceptance tests pass. Current theme evidence and screenshots are in `output/theme/browser-checks.json`; owner forms use development previews, while search/directory and pharmacist reads use an isolated real database.
-- Shiam's owner administration/subscription endpoints, full onboarding-to-public acceptance, another member's laptop setup and the actual six-member rehearsal remain pending. Days 8-14 are not all complete merely because the frontend exists.
+| Day | Current status                                                                                             | What remains                                                                 |
+| --- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| 1–7 | Foundation, frontend features and teammate integration delivered                                           | Ongoing coordination; see historical checkpoints                             |
+| 8   | Complete: sign-in/owner/inventory use real APIs, role navigation and session handling                      | No missing backend dependency                                                |
+| 9   | Complete: real owner onboarding, subscription lifecycle, inventory writes and public availability verified | No missing backend dependency                                                |
+| 10  | Complete: inventory-to-dashboard refresh and calculations                                                  | See DAY-10-VERIFICATION.md                                                   |
+| 11  | Complete implementation: shared language/theme controls, RTL and responsive public pages                   | Team members still need to understand their code                             |
+| 12  | Automated acceptance complete, including real owner workflows                                              | Another member's laptop and actual team acceptance session                   |
+| 13  | Demo script prepared; intentionally deferred                                                               | Freeze scope, review tested fixes and hold the English rehearsal             |
+| 14  | Preparation can proceed                                                                                    | Final data/time/setup review and all six members' understanding/presentation |
 
-Yousef's public frontend is implemented at Alaa's request and connected to persisted search/directory. Its stock-adapter and theme dependencies are resolved; Yousef still needs to understand the delivered code and participate in the English presentation. See [Yousef progress](YOUSEF-PROGRESS.md).
+## Day 8–9 completion
 
-Day 10 is complete; see [Day 10 verification](DAY-10-VERIFICATION.md). Days 8-9 still await Shiam's owner APIs. See [Mohammad implementation](MOHAMMAD-IMPLEMENTATION.md) for the pharmacist workflows.
+- The existing owner screens now run against Shiam's real JWT/Prisma endpoints. No feature API is replaced by sample data.
+- Replaced the owner's duplicate HTTP handler with the shared API client. A real resource 404 now preserves its server reason instead of claiming the owner API is unavailable. Validation arrays, 403/409 reasons, 401 invalidation, 204 deletes, cancellation and network failures have regression coverage.
+- Real browser flow: owner creates pharmacy/account/subscription; the new pharmacist signs in, creates/edits medicine and batch, and sees the dashboard and public availability update.
+- Suspension, reactivation, future/expired dates, delete cancellation, confirmed deletion and subscription recreation are verified. Pharmacist inventory refreshes on focus without re-login; the backend rejects inactive writes. Deleted subscriptions preserve pharmacy/account/stock/duty records.
+- Owner filters, Arabic/mobile forms, password clearing and real server 401-to-sign-in behavior were checked. Only the final request's Authorization header was deliberately invalidated for the 401 scenario; normal business responses were real.
+- See [Days 8–9 verification](DAY-8-9-VERIFICATION.md) and [Day 12 acceptance](DAY-12-ACCEPTANCE.md). Evidence is in `output/day8-9/`.
 
-Day 12's independent acceptance work is complete: current unit/API checks, fresh test-database migration, repeat seed, six frontend regression groups, expanded Swagger/runtime smoke coverage and a tracked-file audit. No frontend defect was found. See [Day 12 acceptance](DAY-12-ACCEPTANCE.md) for the A01-A18 matrix and verification limits. Full Day 12 stays open for Shiam's real owner workflows, [another laptop](SECOND-LAPTOP-CHECK.md) and the actual team acceptance session.
+Current automated checks: typecheck/build, 489 API unit tests, 28 frontend tests, 48 isolated PostgreSQL tests, 61 additional API checks and the real browser workflow. PostgreSQL client regeneration was blocked by a running API's Windows DLL lock; acceptance used the already-generated matching client and a fresh isolated migration. No working database/configuration was changed.
 
-The records below describe earlier checkpoints; pending-adapter/theme statements and older test counts are historical, not current blockers.
+Yousef's frontend and Hamid's theme/public-stock dependencies are integrated. Shiam is no longer a blocker. Team rehearsal, another laptop and individual presentation participation cannot be marked complete by automated checks.
 
 ---
 

@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-10",
+  "database": "isolated test database",
+  "responses": "Real HTTP/JWT/PostgreSQL; only the final owner request Authorization header was deliberately invalidated to exercise the real server 401",
+  "checks": [
+    "Owner role sign-in and real pharmacy creation refresh list",
+    "Create real pharmacist account; duplicate 409 feedback; password cleared",
+    "Create subscription; owner status refreshes to ACTIVE",
+    "New pharmacist can sign in and create/edit real medicine and batch",
+    "Real dashboard refresh reflects persisted stock, then public search finds new pharmacy",
+    "Real pharmacist duty record exists before subscription deletion",
+    "Owner suspension refreshes owner view, pharmacist read-only state and public visibility",
+    "Reactivation restores stock writes and public search without re-login",
+    "Future and expired dates refresh effective statuses and read-only access",
+    "Owner subscription deletion can be cancelled; confirmation keeps pharmacy/account/stock/duty",
+    "Recreate deleted subscription restores existing inventory and public availability",
+    "Owner name/status filters and Arabic/mobile forms use real backend data",
+    "Real server 401 on invalidated owner request clears session and redirects to sign-in"
+  ],
+  "browserErrors": [],
+  "developmentDatabaseUntouched": true
+}
