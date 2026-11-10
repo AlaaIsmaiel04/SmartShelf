@@ -1,0 +1,195 @@
+/* Tailwind utilities share the application's theme variables. Preflight is
+   deliberately omitted to preserve existing form and dialog behavior. */
+@layer theme, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+@theme inline {
+  --color-parchment: var(--background);
+  --color-cream: var(--surface);
+  --color-botanical: var(--sidebar);
+  --color-saffron: var(--gold);
+  --color-ink: var(--foreground);
+  --color-warm-border: var(--border);
+  --font-sans:
+    'Plus Jakarta Sans Variable', 'Noto Kufi Arabic Variable', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+:root {
+  --background: #f5f1e7;
+  --surface: #fffdf8;
+  --foreground: #243d35;
+  --primary: #286352;
+  --primary-hover: #1c4c3e;
+  --sidebar: #203f35;
+  --muted: #62736a;
+  --border: #ded8ca;
+  --mint: #e4ecdf;
+  --gold: #efca67;
+  --gold-hover: #f5d886;
+  --on-gold: #283d30;
+  --input-surface: #faf7ef;
+  --row-surface: #f8f6ef;
+  --row-hover: #f0f3e9;
+  --panel-shadow: 0 6px 18px -12px rgb(32 63 53 / 22%);
+  --radius-panel: 16px;
+  --radius-control: 12px;
+}
+:root[data-theme='dark'] {
+  --background: #201f1a;
+  --surface: #2a2d25;
+  --foreground: #f3efdf;
+  --sidebar: #203f35;
+  --primary: #acd2b8;
+  --primary-hover: #c3e0ca;
+  --muted: #c0c3b2;
+  --border: #55594a;
+  --gold: #efca67;
+  --gold-hover: #f5d886;
+  --input-surface: #24271f;
+  --row-surface: #30352a;
+  --row-hover: #384032;
+  --dark-input: var(--input-surface);
+  --dark-input-border: #7e8571;
+  --dark-raised: var(--row-surface);
+  --dark-raised-hover: var(--row-hover);
+  --panel-shadow: 0 8px 24px -16px rgb(0 0 0 / 50%);
+}
+body {
+  @apply font-sans bg-parchment text-ink;
+  font-family: 'Plus Jakarta Sans Variable', 'Noto Kufi Arabic Variable', sans-serif;
+  background: var(--background);
+  color: var(--foreground);
+  line-height: 1.7;
+}
+:lang(ar) {
+  font-family:
+    'Noto Kufi Arabic Variable', 'Plus Jakarta Sans Variable', sans-serif;
+}
+html[lang='ar'] :is(h1, h2, h3, h4, .brand) {
+  letter-spacing: 0;
+  line-height: 1.8;
+}
+:is(
+  code,
+  kbd,
+  samp,
+  .numeric-value,
+  input[type='number'],
+  input[type='date'],
+  input[type='datetime-local'],
+  time
+) {
+  @apply font-mono tabular-nums;
+  font-family: 'IBM Plex Mono', monospace;
+  font-variant-numeric: tabular-nums;
+}
+/* Surface elevation stays quiet; list rows never acquire a floating shadow. */
+.app-shell
+  :is(.surface, .owner-panel, .inventory-panel, .auth-card, .pharmacy-card) {
+  @apply bg-cream border-warm-border;
+  border-radius: var(--radius-panel);
+  box-shadow: var(--panel-shadow);
+}
+.app-shell :is(.owner-pharmacy-list, .inventory-medicines, .inventory-editor) {
+  border-color: var(--border);
+  border-radius: var(--radius-panel);
+}
+.app-shell
+  :is(input:not([type='checkbox']):not([type='radio']), textarea, select) {
+  background: var(--input-surface);
+  border-color: var(--border);
+}
+.app-shell :is(input, textarea, select):focus {
+  border-color: var(--primary);
+}
+.app-shell :is(.inventory-table-head, .owner-table-head) {
+  background: var(--row-surface);
+  color: var(--muted);
+}
+.app-shell :is(.inventory-medicines, .owner-pharmacy-list) > li:nth-child(odd) {
+  background: var(--row-surface);
+}
+@media (hover: hover) {
+  .app-shell :is(.inventory-row, .owner-pharmacy):hover {
+    background: var(--row-hover);
+  }
+}
+.app-shell .workspace-nav a.active,
+.home-choices > button[aria-selected='true'],
+.home-feature .home-primary {
+  @apply bg-saffron;
+  background: var(--gold);
+  color: var(--on-gold);
+  border-color: var(--gold);
+}
+.home-choices > button:hover {
+  background: var(--row-hover);
+  border-color: var(--primary);
+  color: var(--foreground);
+}
+.home-choices > button[aria-selected='true']:hover,
+.home-feature .home-primary:hover {
+  background: var(--gold-hover);
+  color: var(--on-gold);
+}
+.home-feature {
+  @apply bg-botanical;
+  border-radius: 24px;
+  box-shadow: var(--panel-shadow);
+}
+.home-feature-symbol {
+  color: var(--gold);
+}
+.public-shell .app-topbar {
+  border-bottom-color: #4d6457;
+}
+.workspace-sidebar {
+  box-shadow: 0 10px 28px -20px rgb(32 63 53 / 36%);
+}
+.app-shell :focus-visible {
+  outline-color: var(--primary);
+}
+.workspace-sidebar :focus-visible,
+.public-shell .app-topbar :focus-visible,
+.home-feature :focus-visible {
+  outline-color: var(--gold);
+}
+.app-shell .workspace-nav a.active .interface-icon {
+  color: inherit;
+}
+@media (max-width: 760px) {
+  .workspace-drawer {
+    background: var(--sidebar);
+    color: #f3f0e4;
+  }
+  .workspace-drawer .sidebar-identity,
+  .workspace-drawer .sidebar-preferences {
+    border-color: #52695b;
+  }
+  .workspace-drawer .drawer-heading .brand {
+    color: #f3f0e4;
+  }
+  .app-shell .workspace-drawer .workspace-nav a:not(.active),
+  .workspace-drawer .sidebar-identity,
+  .workspace-drawer .sidebar-preferences,
+  .workspace-drawer .drawer-close {
+    color: #f3f0e4;
+  }
+  .workspace-drawer .nav-label { color: #c0d0c5; }
+  .app-shell .workspace-drawer .workspace-nav a:not(.active):hover,
+  .workspace-drawer .drawer-close:hover {
+    background: #355a49;
+  }
+}
+/* Respect the user's motion preference, including earlier feature styles. */
+@media (prefers-reduced-motion: reduce) {
+  .app-shell *,
+  .app-shell *::before,
+  .app-shell *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

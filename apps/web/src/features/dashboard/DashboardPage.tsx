@@ -117,7 +117,9 @@ export default function DashboardPage() {
             ).map(([label, value]) => (
               <div key={label}>
                 <dt>{t(label)}</dt>
-                <dd dir="ltr">{value}</dd>
+                <dd dir="ltr" className="numeric-value">
+                  {value}
+                </dd>
               </div>
             ))}
           </dl>

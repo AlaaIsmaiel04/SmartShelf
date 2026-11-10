@@ -3,11 +3,16 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { App } from './app/App';
 import { AuthProvider } from './features/auth/AuthProvider';
+import '@fontsource-variable/plus-jakarta-sans';
+import '@fontsource-variable/noto-kufi-arabic';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
 import './styles.css';
 import './refresh.css';
 import './theme.css';
 import './components/workspace.css';
 import './components/public-header.css';
+import './visual-language.css';
 import { LanguageProvider } from './features/preferences/LanguageProvider';
 import { ThemeProvider } from './features/preferences/ThemeProvider';
 import {
