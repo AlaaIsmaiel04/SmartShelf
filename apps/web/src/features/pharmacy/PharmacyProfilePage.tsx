@@ -52,7 +52,7 @@ export function PharmacyProfilePage() {
   const active = !loading && !error && profile?.subscriptionStatus === 'ACTIVE';
 
   return (
-    <div className="pharmacist-page">
+    <div className="pharmacist-page profile-page">
       <header>
         <h2>{t('Pharmacy profile & duty')}</h2>
         <p>{t('Update contact details and publish your duty schedule.')}</p>

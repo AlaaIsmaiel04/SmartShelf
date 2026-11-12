@@ -1,0 +1,111 @@
+/* Compact operational layout; scoped to the dashboard, not profile/duty forms. */
+.app-shell .dashboard-page {
+  gap: 16px;
+}
+.app-shell .dashboard-page > header h2 {
+  margin-block: 0 4px;
+}
+.app-shell .dashboard-page > header p {
+  margin-block: 0;
+}
+.app-shell .dashboard-page .dashboard-summary {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  padding: 16px 20px;
+}
+.app-shell .dashboard-page .dashboard-summary h3 {
+  margin: 0;
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}
+.app-shell .dashboard-page .dashboard-subscription {
+  margin: 0;
+  font-size: 14px;
+}
+.app-shell .dashboard-page .dashboard-inventory-link {
+  margin-inline-start: auto;
+  min-height: 44px;
+  white-space: normal;
+  text-align: center;
+}
+.app-shell .dashboard-page .dashboard-restriction {
+  flex-basis: 100%;
+  order: 1;
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+.app-shell .dashboard-page .dashboard-metrics {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.app-shell .dashboard-page .dashboard-metrics > div {
+  padding: 16px 20px;
+}
+.app-shell .dashboard-page .dashboard-metrics > div:last-child {
+  grid-column: span 2;
+}
+.app-shell .dashboard-page .dashboard-metrics dt {
+  font-size: 13px;
+  line-height: 1.6;
+}
+.app-shell .dashboard-page .dashboard-metrics dd {
+  margin-block: 4px 0;
+  font-size: 28px;
+  line-height: 1.3;
+}
+.app-shell .dashboard-page .dashboard-attention {
+  padding: 16px 20px;
+}
+.app-shell .dashboard-page .dashboard-attention h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+.app-shell .dashboard-page .attention-list > li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding: 12px 0;
+}
+.app-shell .dashboard-page .attention-list > li > strong {
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.app-shell .dashboard-page .pharmacist-badges {
+  margin: 0;
+  gap: 6px;
+}
+@media (max-width: 1100px) {
+  .app-shell .dashboard-page .dashboard-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 480px) {
+  .app-shell .dashboard-page .dashboard-summary {
+    gap: 8px;
+    padding: 16px;
+  }
+  .app-shell .dashboard-page .dashboard-summary h3,
+  .app-shell .dashboard-page .dashboard-subscription {
+    flex-basis: 100%;
+  }
+  .app-shell .dashboard-page .dashboard-inventory-link {
+    margin-inline-start: 0;
+  }
+  .app-shell .dashboard-page .dashboard-metrics {
+    gap: 8px;
+  }
+  .app-shell .dashboard-page .dashboard-metrics > div {
+    padding: 12px;
+  }
+  .app-shell .dashboard-page .dashboard-metrics dd {
+    font-size: 24px;
+  }
+  .app-shell .dashboard-page .dashboard-attention {
+    padding: 16px;
+  }
+}
