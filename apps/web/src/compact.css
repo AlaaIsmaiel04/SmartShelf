@@ -1,0 +1,333 @@
+/* Shared working density. Colors, states, direction and control behavior stay
+   with the existing visual system; touch targets remain at least 44px. */
+.app-shell .app-main {
+  padding-block: 24px 32px;
+}
+.workspace-shell .app-topbar {
+  min-height: 56px;
+  padding-block: 12px;
+}
+.public-shell .app-topbar {
+  min-height: 72px;
+  padding-block: 12px;
+}
+.app-shell .app-footer {
+  padding-block: 12px;
+}
+.app-shell :is(.owner-page, .inventory-page, .pharmacist-page) {
+  gap: 16px;
+}
+.app-shell :is(.owner-heading, .inventory-page > header, .pharmacist-page > header) {
+  margin-bottom: 0;
+}
+.app-shell :is(.owner-heading, .inventory-page > header, .pharmacist-page > header) h2 {
+  font-size: clamp(24px, 2.4vw, 30px);
+  margin-block: 0 4px;
+}
+.app-shell :is(.owner-heading, .inventory-page > header, .pharmacist-page > header) p {
+  margin-block: 0;
+}
+.app-shell :is(.surface, .owner-panel, .inventory-panel, .inventory-editor) {
+  padding: 20px;
+}
+.app-shell :is(.surface, .owner-panel, .inventory-panel) > h3 {
+  margin-block: 0 12px;
+}
+.app-shell :is(.owner-filters, .inventory-filters) {
+  gap: 12px;
+  margin-block: 12px 16px;
+}
+.app-shell :is(.owner-create-form, .pharmacist-form, .auth-form) {
+  gap: 16px;
+}
+.app-shell :is(.owner-create-form fieldset, .pharmacist-form fieldset, .inventory-form-fields) {
+  gap: 16px;
+}
+.app-shell .inventory-form-fields {
+  margin-block: 16px;
+}
+.app-shell :is(.owner-create-form, .pharmacist-form, .inventory-form-fields, .auth-form) label {
+  gap: 6px;
+}
+.app-shell :is(.owner-actions, .inventory-actions, .pharmacist-actions) {
+  gap: 8px;
+}
+.app-shell :is(.owner-success, .inventory-success, .inventory-readonly, .pharmacist-success) {
+  padding: 12px 16px;
+}
+.app-shell :is(.owner-preview-notice, .inventory-preview-notice) {
+  margin-bottom: 16px;
+  padding: 12px 16px;
+}
+.app-shell :is(.owner-pharmacy-list, .inventory-medicines) {
+  margin-block: 16px;
+  padding: 12px;
+}
+.app-shell :is(.owner-table-head, .inventory-table-head) {
+  padding-block: 10px;
+}
+.app-shell .owner-pharmacy,
+.app-shell .inventory-medicines .inventory-row {
+  padding: 14px 16px;
+  gap: 12px;
+}
+.app-shell .owner-management-grid {
+  gap: 16px;
+  margin-top: 16px;
+  align-items: start;
+}
+.app-shell .owner-management-grid > section {
+  padding: 16px;
+  border-radius: var(--radius-panel);
+}
+.app-shell .inventory-batch-list {
+  gap: 12px;
+}
+.app-shell .inventory-batch-list > li {
+  padding-top: 12px;
+}
+.app-shell .inventory-batch-list .inventory-facts {
+  gap: 12px;
+  margin-block: 12px;
+}
+.app-shell .inventory-editor h3 {
+  font-size: 22px;
+  margin-block: 0 8px;
+}
+.app-shell .inventory-editor-note {
+  padding: 12px 16px;
+  margin-top: 16px;
+}
+.app-shell .profile-page > p {
+  margin: 0;
+}
+.app-shell .profile-page .surface > p {
+  margin-block: 8px 12px;
+  font-size: 14px;
+}
+.app-shell .profile-page .pharmacist-form {
+  max-width: none;
+}
+.app-shell .profile-page .duty-list > li {
+  padding-block: 12px;
+}
+/* Public search gets users to its filters and results without a large banner. */
+.app-shell .public-intro {
+  padding: 24px;
+  gap: 24px;
+  border-radius: var(--radius-panel);
+}
+.app-shell .public-intro h2 {
+  font-size: clamp(26px, 3vw, 36px);
+  margin-block: 0 8px;
+}
+.app-shell .public-intro p {
+  font-size: 14px;
+}
+.app-shell .public-intro .care-symbol {
+  width: 80px;
+  height: 80px;
+}
+.app-shell .public-filters {
+  margin: 16px 0 0;
+  padding: 16px 20px;
+  gap: 12px;
+  box-shadow: var(--panel-shadow);
+}
+.app-shell .public-filters input:not([type='checkbox']) {
+  min-height: 44px;
+  padding-block: 10px;
+}
+.app-shell .public-actions button,
+.app-shell .public-checkbox {
+  min-height: 44px;
+}
+.app-shell .public-note {
+  margin: 12px 0 16px;
+}
+.app-shell .public-result-count {
+  margin-block: 16px 12px;
+}
+.app-shell .public-results {
+  gap: 16px;
+}
+.app-shell .public-pharmacy {
+  padding: 20px;
+}
+.app-shell .public-card-heading h3 {
+  font-size: 18px;
+}
+.app-shell .public-address {
+  margin-block: 8px;
+}
+.app-shell .public-pharmacy dl {
+  margin-top: 12px;
+}
+.app-shell .public-pharmacy dl > div {
+  padding-block: 8px;
+}
+.app-shell .public-empty {
+  padding: 24px 16px;
+}
+.app-shell .public-empty > .interface-icon {
+  margin-bottom: 12px;
+}
+/* Keep the welcome page's equal-choice interaction while reducing its height. */
+.app-shell .home-choices {
+  margin-bottom: 12px;
+}
+.app-shell .home-choices > button {
+  min-height: 56px;
+  padding: 12px;
+}
+.app-shell .home-feature {
+  padding: 32px;
+}
+.app-shell .home-feature-content {
+  min-height: 240px;
+  grid-template-columns: minmax(0, 1fr) 140px;
+  gap: 32px;
+}
+.app-shell .home-feature-copy h2 {
+  font-size: clamp(28px, 3.3vw, 42px);
+  margin-bottom: 16px;
+}
+.app-shell .home-feature-copy > p {
+  font-size: 15px;
+  min-height: 0;
+  margin-bottom: 20px;
+}
+.app-shell .home-feature-symbol > .interface-icon {
+  width: 100px;
+  height: 100px;
+}
+.app-shell .login-welcome h2 {
+  font-size: clamp(24px, 2.6vw, 30px);
+  margin-bottom: 4px;
+}
+.app-shell .login-welcome p {
+  margin-block: 0;
+}
+.app-shell .auth-layout {
+  gap: 24px;
+  margin-top: 20px;
+}
+.app-shell :is(.auth-card, .auth-story) {
+  padding: 24px;
+}
+.app-shell .auth-story {
+  min-height: 0;
+}
+.app-shell .auth-card h2 {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+.app-shell .auth-story .care-symbol {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 16px;
+}
+.app-shell .auth-story h2 {
+  font-size: clamp(26px, 2.6vw, 32px);
+}
+.app-shell .auth-story small {
+  padding-top: 16px;
+}
+.app-shell .auth-form input,
+.app-shell .auth-form > button {
+  min-height: 44px;
+}
+@media (min-width: 1181px) {
+  .app-shell .inventory-row,
+  .app-shell .inventory-table-head {
+    grid-template-columns:
+      minmax(160px, 1.5fr) minmax(80px, 0.8fr) minmax(60px, 0.6fr)
+      minmax(60px, 0.6fr) minmax(110px, 1fr) minmax(200px, 1.2fr);
+  }
+  .app-shell .inventory-row > .inventory-actions {
+    display: flex;
+  }
+  .app-shell .inventory-row > .inventory-actions > button {
+    flex: 1;
+  }
+  .app-shell .profile-page {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    align-items: start;
+  }
+  .app-shell .profile-page > :not(.surface) {
+    grid-column: 1 / -1;
+  }
+  .app-shell .profile-page .pharmacist-form fieldset {
+    grid-template-columns: 1fr;
+  }
+}
+@media (min-width: 761px) {
+  .app-shell .inventory-editor-medicine .inventory-form-fields > label:nth-child(-n + 2) {
+    grid-column: auto;
+  }
+  .app-shell .public-pharmacy dl {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 16px;
+  }
+  .app-shell .public-pharmacy dl > div:last-child {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 1050px) {
+  .app-shell :is(.inventory-medicines, .owner-pharmacy-list) {
+    padding: 0;
+    gap: 12px;
+  }
+  .app-shell .owner-pharmacy,
+  .app-shell .inventory-medicines .inventory-row {
+    padding: 16px;
+  }
+  .app-shell .owner-pharmacy dl {
+    gap: 12px;
+    margin-block: 16px;
+  }
+  .app-shell .inventory-row > .inventory-facts {
+    gap: 12px;
+    margin-block: 8px 12px;
+  }
+  .app-shell .inventory-row > .inventory-badges {
+    margin-block: 8px;
+  }
+}
+@media (max-width: 760px) {
+  .app-shell .app-main {
+    padding-block: 16px 24px;
+  }
+  .workspace-shell .app-topbar {
+    min-height: 36px;
+    padding-block: 0 8px;
+  }
+  .app-shell :is(.surface, .owner-panel, .inventory-panel, .inventory-editor, .auth-card, .auth-story) {
+    padding: 16px;
+  }
+  .app-shell .public-intro {
+    padding: 20px;
+  }
+  .app-shell .public-intro .care-symbol {
+    display: none;
+  }
+  .app-shell :is(.public-filters, .public-pharmacy) {
+    padding: 16px;
+  }
+  .app-shell .public-filters > label:not(.public-checkbox) {
+    flex-basis: 100%;
+  }
+  .app-shell .home-feature {
+    padding: 24px 20px;
+  }
+  .app-shell .home-feature-content {
+    min-height: 0;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .app-shell .home-choices > button {
+    padding: 10px 6px;
+    min-height: 76px;
+  }
+}

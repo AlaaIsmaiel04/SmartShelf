@@ -7,6 +7,7 @@ import { useInventoryRevision } from '../../lib/inventory-updates';
 import { useRefreshOnFocus } from '../../lib/use-refresh';
 import { createDashboardService } from './dashboard-api';
 import '../pharmacy/pharmacist.css';
+import './dashboard.css';
 
 export default function DashboardPage() {
   const { accessToken, invalidateSession } = useAuth();
@@ -55,7 +56,7 @@ export default function DashboardPage() {
   }, [service, revision, inventoryRevision]);
 
   return (
-    <div className="pharmacist-page" aria-busy={loading}>
+    <div className="pharmacist-page dashboard-page" aria-busy={loading}>
       <header>
         <h2>{t('Pharmacist dashboard')}</h2>
         <p>
@@ -76,9 +77,9 @@ export default function DashboardPage() {
 
       {data && (
         <>
-          <section className="surface">
+          <section className="surface dashboard-summary">
             <h3 dir="auto">{data.pharmacyName}</h3>
-            <p>
+            <p className="dashboard-subscription">
               {t('Subscription:')}{' '}
               <strong>
                 {translateMessage(
@@ -94,13 +95,15 @@ export default function DashboardPage() {
               </strong>
             </p>
             {data.subscriptionStatus !== 'ACTIVE' && (
-              <p role="status">
+              <p className="dashboard-restriction" role="status">
                 {t(
                   'Inactive subscriptions can view data. Changes require an active subscription.',
                 )}
               </p>
             )}
-            <Link to="/pharmacist/inventory">{t('Open inventory')}</Link>
+            <Link className="button dashboard-inventory-link" to="/pharmacist/inventory">
+              {t('Open inventory')}
+            </Link>
           </section>
 
           <dl className="dashboard-metrics">
@@ -128,7 +131,7 @@ export default function DashboardPage() {
             <p role="status">{t('Your pharmacy has no medicines yet.')}</p>
           )}
 
-          <section className="surface">
+          <section className="surface dashboard-attention">
             <h3>{t('Needs attention')}</h3>
             {data.attentionItems.length === 0 ? (
               <p>{t('No medicines need attention.')}</p>
