@@ -10,13 +10,13 @@ import {
 import { effectiveSubscriptionStatus as effectiveSubscription } from './subscription-status';
 import { toMedicine } from './inventory-mapper';
 
-test('business midnight is based on Asia/Amman rather than server timezone', () => {
+test('business midnight is based on Asia/Damascus rather than server timezone', () => {
   assert.equal(
-    businessDate(new Date('2026-11-01T20:59:59Z'), 'Asia/Amman'),
+    businessDate(new Date('2026-11-01T20:59:59Z'), 'Asia/Damascus'),
     '2026-11-01',
   );
   assert.equal(
-    businessDate(new Date('2026-11-01T21:00:00Z'), 'Asia/Amman'),
+    businessDate(new Date('2026-11-01T21:00:00Z'), 'Asia/Damascus'),
     '2026-11-02',
   );
 });

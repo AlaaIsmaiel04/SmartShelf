@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import type { PublicPharmacy } from '@smartshelf/contracts';
-import { createPublicService, publicPharmacy, jordanTime } from './public-api';
+import { createPublicService, publicPharmacy, syriaTime } from './public-api';
 
 test('public requests encode filters, require medicine text and do not send staff credentials', async () => {
   const original = globalThis.fetch;
@@ -77,8 +77,8 @@ test('public allowlist strips private and nested fields and handles nullable dat
     'endsAt',
     'startsAt',
   ]);
-  assert.equal(jordanTime('invalid', 'en'), null);
-  assert.match(jordanTime('2026-11-06T00:00:00Z', 'en')!, /03:00/);
+  assert.equal(syriaTime('invalid', 'en'), null);
+  assert.match(syriaTime('2026-11-06T00:00:00Z', 'en')!, /03:00/);
 });
 
 test('public 503 and network errors reject without a sample fallback', async () => {

@@ -55,12 +55,12 @@ export function createPublicService(request = createApiClient()) {
   };
 }
 
-export function jordanTime(value: string, language: string) {
+export function syriaTime(value: string, language: string) {
   const date = new Date(value);
   return Number.isNaN(date.getTime())
     ? null
-    : new Intl.DateTimeFormat(language === 'ar' ? 'ar-JO' : 'en-GB', {
-        timeZone: 'Asia/Amman',
+    : new Intl.DateTimeFormat(language === 'ar' ? 'ar-SY' : 'en-GB', {
+        timeZone: 'Asia/Damascus',
         dateStyle: 'medium',
         timeStyle: 'short',
       }).format(date);

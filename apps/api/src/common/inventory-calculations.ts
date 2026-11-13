@@ -22,7 +22,7 @@ export interface DashboardMetrics {
 
 export function getAmmanMidnight(date: Date): Date {
   const parts = new Intl.DateTimeFormat('en-US', {
-    timeZone: 'Asia/Amman',
+    timeZone: 'Asia/Damascus',
     year: 'numeric',
     month: 'numeric',
     day: 'numeric',

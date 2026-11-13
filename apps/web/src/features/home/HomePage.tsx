@@ -3,6 +3,7 @@ import { useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../preferences/LanguageProvider';
 import './home.css';
+import { SERVICE_AREA } from '../directory/duty-schedule';
 
 const SUPPORT_EMAIL = 'alaa.ismaiel20@gmail.com';
 
@@ -13,7 +14,7 @@ export function HomePage() {
   const [fields, setFields] = useState({
     name: '',
     pharmacy: '',
-    area: '',
+    area: SERVICE_AREA,
     email: '',
   });
   const [draftReady, setDraftReady] = useState(false);
@@ -23,7 +24,7 @@ export function HomePage() {
     '',
     `Pharmacist name: ${fields.name.trim()}`,
     `Pharmacy name: ${fields.pharmacy.trim()}`,
-    `Area / city: ${fields.area.trim()}`,
+    `Area / city: Syria / Hama / ${fields.area.trim()}`,
     `Contact email: ${fields.email.trim()}`,
     '',
     'Please let me know the verification requirements and subscription details.',
@@ -37,6 +38,7 @@ export function HomePage() {
     <div className="home-page home-entry">
       <header className="entry-heading">
         <h1>{t('How can SmartShelf help you?')}</h1>
+        <p>{t('Syria / Hama / Salamiyah')}</p>
         <p>
           {t(
             'Choose your next step. Medicine search and duty schedules are open to everyone.',
@@ -66,10 +68,7 @@ export function HomePage() {
           </span>
           <ArrowRight className="entry-arrow" aria-hidden="true" />
         </Link>
-        <Link
-          className="entry-choice entry-duty"
-          to="/pharmacies?onDutyNow=true"
-        >
+        <Link className="entry-choice entry-duty" to="/pharmacies">
           <Hospital className="entry-icon" aria-hidden="true" />
           <span className="entry-title">{t('On-duty pharmacies')}</span>
           <span className="entry-description">
@@ -148,6 +147,7 @@ export function HomePage() {
                           maxLength={field === 'email' ? 254 : 120}
                           pattern={field === 'email' ? undefined : '.*\\S.*'}
                           value={fields[field]}
+                          readOnly={field === 'area'}
                           onChange={(event) => {
                             setFields({
                               ...fields,

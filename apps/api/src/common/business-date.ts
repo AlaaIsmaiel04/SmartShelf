@@ -2,7 +2,7 @@ import { BadRequestException } from '@nestjs/common';
 
 export function businessDate(
   now = new Date(),
-  zone = process.env.BUSINESS_TIME_ZONE ?? 'Asia/Amman',
+  zone = process.env.BUSINESS_TIME_ZONE ?? 'Asia/Damascus',
 ): string {
   const parts = new Intl.DateTimeFormat('en-US', {
     timeZone: zone,
