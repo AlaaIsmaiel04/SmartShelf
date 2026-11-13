@@ -89,7 +89,8 @@ export function AppShell({ children }: { children: ReactNode }) {
     });
   if (!(workspace && pharmacist))
     links.push({ to: '/', label: 'Home', icon: 'home', end: true });
-  links.push({ to: '/search', label: 'Medicine Search', icon: 'search' });
+  if (!(workspace && pharmacist))
+    links.push({ to: '/search', label: 'Medicine Search', icon: 'search' });
   if (!(workspace && pharmacist))
     links.push({ to: '/pharmacies', label: 'Pharmacies', icon: 'pharmacy' });
   if (!user) links.push({ to: '/login', label: 'Sign in', icon: 'signin' });
