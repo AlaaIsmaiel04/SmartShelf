@@ -20,7 +20,7 @@ Open <http://localhost:5173/login>, sign in, then open <http://localhost:5173/ph
 1. Run `npm ci`.
 2. Copy `apps/api/.env.example` and `apps/web/.env.example` to their neighboring `.env` files only if those files do not exist.
 3. Create a dedicated PostgreSQL database and user; set `DATABASE_URL` accordingly. Alternatively, if port 5432 is free, `docker compose up -d db` starts the supplied local database using the example connection values. The `.local` cluster is machine-local and is not part of the repository.
-4. Generate a JWT secret with `node -e "console.log(require('node:crypto').randomBytes(48).toString('hex'))"` and put it in `apps/api/.env` as `JWT_SECRET`. Keep `BUSINESS_TIME_ZONE=Asia/Amman`.
+4. Generate a JWT secret with `node -e "console.log(require('node:crypto').randomBytes(48).toString('hex'))"` and put it in `apps/api/.env` as `JWT_SECRET`. Keep `BUSINESS_TIME_ZONE=Asia/Damascus`.
 5. Run:
 
 ```powershell

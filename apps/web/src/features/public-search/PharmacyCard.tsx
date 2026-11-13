@@ -1,14 +1,25 @@
 import type { PublicPharmacy } from '@smartshelf/contracts';
 import { useLanguage } from '../preferences/LanguageProvider';
-import { jordanTime } from './public-api';
+import { syriaTime } from './public-api';
 
-export function PharmacyCard({ pharmacy }: { pharmacy: PublicPharmacy }) {
+export function PharmacyCard({
+  pharmacy,
+  demo = false,
+}: {
+  pharmacy: PublicPharmacy;
+  demo?: boolean;
+}) {
   const { t, language } = useLanguage();
   const time = (value: string) =>
-    jordanTime(value, language) ?? t('Time unavailable');
+    syriaTime(value, language) ?? t('Time unavailable');
   const phone = pharmacy.phone.replace(/[^+\d]/g, '');
   return (
     <article className="public-pharmacy">
+      {demo && (
+        <p className="demo-card-label">
+          {t('Fictional pharmacy · simulated availability')}
+        </p>
+      )}
       <div className="public-card-heading">
         <h3>
           <bdi>{pharmacy.name}</bdi>
@@ -24,12 +35,16 @@ export function PharmacyCard({ pharmacy }: { pharmacy: PublicPharmacy }) {
         <br />
         <bdi>{pharmacy.address}</bdi>
       </p>
-      <a
-        href={`tel:${phone}`}
-        aria-label={`${t('Call pharmacy')}: ${pharmacy.name}`}
-      >
-        <bdi dir="ltr">{pharmacy.phone}</bdi>
-      </a>
+      {phone ? (
+        <a
+          href={`tel:${phone}`}
+          aria-label={`${t('Call pharmacy')}: ${pharmacy.name}`}
+        >
+          <bdi dir="ltr">{pharmacy.phone}</bdi>
+        </a>
+      ) : (
+        <p>{t('No contact number provided')}</p>
+      )}
       <dl>
         <div>
           <dt>{t('Current duty')}</dt>

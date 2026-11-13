@@ -58,7 +58,7 @@ export class PublicController {
     summary:
       'Search a medicine name and list the pharmacies that have it available; returns pharmacy fields only',
     description:
-      'No sign-in. A pharmacy is returned once if its subscription is ACTIVE and one batch of a matching medicine has a quantity above 0 and an expiry date not before today in Asia/Amman.',
+      'No sign-in. A pharmacy is returned once if its subscription is ACTIVE and one batch of a matching medicine has a quantity above 0 and an expiry date not before today in Asia/Damascus.',
   })
   @ApiOkResponse(PUBLIC_RESULT)
   @ApiErrors(

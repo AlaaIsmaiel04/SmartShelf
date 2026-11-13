@@ -7,24 +7,31 @@ import { createPublicService } from './public-api';
 import { PharmacyCard } from './PharmacyCard';
 import { CareSymbol, InterfaceIcon } from '../../components/InterfaceIcon';
 import './public.css';
+import { SERVICE_AREA } from '../directory/duty-schedule';
+import { demoMedicines, searchDemoMedicines } from './demo-search';
 
 export function PublicSearchPage({
   directory = false,
 }: {
   directory?: boolean;
 }) {
-  const { t, translateMessage } = useLanguage();
+  const { t, translateMessage, language } = useLanguage();
   const [searchParams] = useSearchParams();
   const initialDutyOnly = directory && searchParams.get('onDutyNow') === 'true';
   const service = useMemo(() => createPublicService(), []);
-  const [q, setQ] = useState('');
-  const [area, setArea] = useState('');
+  const [demo, setDemo] = useState(!directory);
+  const [q, setQ] = useState(directory ? '' : 'Panadol');
+  const area = SERVICE_AREA;
   const [onDutyNow, setOnDutyNow] = useState(initialDutyOnly);
   const [submitted, setSubmitted] = useState<{
     q: string;
     area: string;
     onDutyNow: boolean;
-  } | null>(directory ? { q: '', area: '', onDutyNow: initialDutyOnly } : null);
+  } | null>(
+    directory
+      ? { q: '', area, onDutyNow: initialDutyOnly }
+      : { q: 'Panadol', area, onDutyNow: false },
+  );
   const [attempt, setAttempt] = useState(0);
   const [data, setData] = useState<ListResponse<PublicPharmacy> | null>(null);
   const [error, setError] = useState('');
@@ -37,9 +44,11 @@ export function PublicSearchPage({
     setLoading(true);
     setError('');
     setData(null);
-    const promise = directory
-      ? service.listPublicPharmacies(submitted, controller.signal)
-      : service.searchMedicines(submitted, controller.signal);
+    const promise = demo
+      ? Promise.resolve(searchDemoMedicines(submitted))
+      : directory
+        ? service.listPublicPharmacies(submitted, controller.signal)
+        : service.searchMedicines(submitted, controller.signal);
     promise
       .then((result) => {
         if (!controller.signal.aborted) setData(result);
@@ -58,7 +67,17 @@ export function PublicSearchPage({
         if (!controller.signal.aborted) setLoading(false);
       });
     return () => controller.abort();
-  }, [submitted, directory, service, attempt]);
+  }, [submitted, directory, service, attempt, demo]);
+  function changeMode() {
+    setDemo(!demo);
+    setQ(demo ? '' : 'Panadol');
+    setSubmitted(demo ? null : { q: 'Panadol', area, onDutyNow: false });
+    setOnDutyNow(false);
+    setData(null);
+    setError('');
+    setInvalid(false);
+    setLoading(false);
+  }
   function submit(event: FormEvent) {
     event.preventDefault();
     if (!directory && !q.trim()) {
@@ -71,13 +90,12 @@ export function PublicSearchPage({
   }
   function clear() {
     setQ('');
-    setArea('');
     setOnDutyNow(false);
     setInvalid(false);
     setData(null);
     setError('');
     setLoading(false);
-    setSubmitted(directory ? { q: '', area: '', onDutyNow: false } : null);
+    setSubmitted(directory ? { q: '', area, onDutyNow: false } : null);
     input.current?.focus();
   }
   return (
@@ -97,6 +115,49 @@ export function PublicSearchPage({
         </div>
         <CareSymbol />
       </header>
+      {!directory && (
+        <aside
+          className="search-demo-notice"
+          aria-label={t('Search data source')}
+        >
+          <div>
+            <strong>{t(demo ? 'Demo search' : 'Live search')}</strong>
+            <p>
+              {t(
+                demo
+                  ? 'Preview only: pharmacy names, addresses, stock and duty times below are fictional. They are not the published Salamiyah duty schedule.'
+                  : 'Results come from registered pharmacies and their recorded inventory.',
+              )}
+            </p>
+          </div>
+          <button type="button" className="secondary" onClick={changeMode}>
+            {t(demo ? 'Use live search' : 'Use demo search')}
+          </button>
+        </aside>
+      )}
+      {demo && (
+        <div
+          className="demo-medicine-choices"
+          aria-label={t('Try a sample medicine')}
+        >
+          <span>{t('Try a sample medicine')}</span>
+          {demoMedicines.slice(0, 6).map((medicine) => (
+            <button
+              type="button"
+              key={medicine.name}
+              onClick={() => {
+                const value =
+                  language === 'ar' ? medicine.arabic : medicine.name;
+                setQ(value);
+                setInvalid(false);
+                setSubmitted({ q: value, area, onDutyNow });
+              }}
+            >
+              {language === 'ar' ? medicine.arabic : medicine.name}
+            </button>
+          ))}
+        </div>
+      )}
       <form
         className="public-filters"
         onSubmit={submit}
@@ -131,8 +192,8 @@ export function PublicSearchPage({
           <input
             ref={directory ? input : undefined}
             name="area"
-            value={area}
-            onChange={(e) => setArea(e.target.value)}
+            value={t('Syria / Hama / Salamiyah')}
+            readOnly
           />
         </label>
         <label className="public-checkbox">
@@ -141,7 +202,7 @@ export function PublicSearchPage({
             checked={onDutyNow}
             onChange={(e) => setOnDutyNow(e.target.checked)}
           />
-          {t('On duty now only')}
+          {t(demo ? 'Simulated on-duty pharmacies only' : 'On duty now only')}
         </label>
         <div className="public-actions">
           <button type="submit">
@@ -155,7 +216,9 @@ export function PublicSearchPage({
       </form>
       <p className="public-note">
         {t(
-          'Duty status is not general opening hours. Times are shown in Jordan time. Contact the pharmacy to confirm availability.',
+          demo
+            ? 'All availability, duty periods and update times shown in demo mode are simulated.'
+            : 'Duty status is not general opening hours. Times are shown in Syria time. Contact the pharmacy to confirm availability.',
         )}
       </p>
       <div aria-live="polite" aria-atomic="true">
@@ -210,6 +273,7 @@ export function PublicSearchPage({
               <PharmacyCard
                 key={`${pharmacy.name}|${pharmacy.phone}|${index}`}
                 pharmacy={pharmacy}
+                demo={demo}
               />
             ))}
           </div>

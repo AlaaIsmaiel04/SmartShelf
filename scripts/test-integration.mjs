@@ -27,7 +27,7 @@ const env = {
   ...process.env,
   DATABASE_URL: databaseUrl,
   JWT_SECRET: randomBytes(48).toString('hex'),
-  BUSINESS_TIME_ZONE: 'Asia/Amman',
+  BUSINESS_TIME_ZONE: 'Asia/Damascus',
   RUN_DB_TESTS: 'true',
 };
 function run(args, cwd = root) {
