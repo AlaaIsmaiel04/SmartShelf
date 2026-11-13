@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import type { ListResponse, PublicPharmacy } from '@smartshelf/contracts';
 import { useLanguage } from '../preferences/LanguageProvider';
 import { ApiRequestError } from '../../lib/api';
@@ -13,15 +14,17 @@ export function PublicSearchPage({
   directory?: boolean;
 }) {
   const { t, translateMessage } = useLanguage();
+  const [searchParams] = useSearchParams();
+  const initialDutyOnly = directory && searchParams.get('onDutyNow') === 'true';
   const service = useMemo(() => createPublicService(), []);
   const [q, setQ] = useState('');
   const [area, setArea] = useState('');
-  const [onDutyNow, setOnDutyNow] = useState(false);
+  const [onDutyNow, setOnDutyNow] = useState(initialDutyOnly);
   const [submitted, setSubmitted] = useState<{
     q: string;
     area: string;
     onDutyNow: boolean;
-  } | null>(directory ? { q: '', area: '', onDutyNow: false } : null);
+  } | null>(directory ? { q: '', area: '', onDutyNow: initialDutyOnly } : null);
   const [attempt, setAttempt] = useState(0);
   const [data, setData] = useState<ListResponse<PublicPharmacy> | null>(null);
   const [error, setError] = useState('');
