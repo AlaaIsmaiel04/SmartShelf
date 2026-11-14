@@ -721,6 +721,133 @@ test(
           }
         },
       );
+      await t.test(
+        'combined creation accepts an omitted scientific name and persists the first batch atomically',
+        async () => {
+          const response = await call('POST', '/pharmacist/medicines', a, {
+            displayName: 'Combined medicine',
+            category: 'Demo',
+            reorderThreshold: 0,
+            initialBatch: { ...batchInput, batchNumber: 'FIRST-COMBINED' },
+          });
+          assert.equal(response.status, 201);
+          assert.equal(response.body.scientificName, '');
+          assert.equal(response.body.batches.length, 1);
+          assert.equal(response.body.availableQuantity, batchInput.quantity);
+          const saved = await prisma.medicine.findUniqueOrThrow({
+            where: { id: response.body.id },
+            include: { batches: true },
+          });
+          assert.equal(saved.pharmacyId, pharmacyIds[0]);
+          assert.equal(saved.batches[0].batchNumber, 'FIRST-COMBINED');
+          for (const invalid of [
+            { quantity: -1 },
+            { expiryDate: '2026-02-30' },
+            { unitCost: '2.999' },
+            { pharmacyId: pharmacyIds[1] },
+          ]) {
+            const bad = await call('POST', '/pharmacist/medicines', a, {
+              displayName: 'Invalid combined medicine',
+              category: 'Demo',
+              reorderThreshold: 0,
+              initialBatch: { ...batchInput, ...invalid },
+            });
+            assert.equal(bad.status, 400);
+            assert.equal(
+              await prisma.medicine.count({
+                where: {
+                  pharmacyId: pharmacyIds[0],
+                  displayName: 'Invalid combined medicine',
+                },
+              }),
+              0,
+            );
+          }
+          assert.equal(
+            (
+              await call('POST', '/pharmacist/medicines', a, {
+                displayName: ' combined MEDICINE ',
+                category: 'Demo',
+                reorderThreshold: 0,
+                initialBatch: batchInput,
+              })
+            ).status,
+            409,
+          );
+          assert.equal(
+            (
+              await prisma.medicine.findUniqueOrThrow({
+                where: { id: saved.id },
+                include: { batches: true },
+              })
+            ).batches.length,
+            1,
+          );
+          const edited = await call(
+            'PATCH',
+            `/pharmacist/medicines/${saved.id}`,
+            a,
+            {
+              displayName: saved.displayName,
+              category: 'Updated',
+              reorderThreshold: 0,
+              scientificName: '',
+            },
+          );
+          assert.equal(edited.status, 200);
+          assert.equal(edited.body.scientificName, '');
+        },
+      );
+      await t.test(
+        'a failed first batch insert rolls back the medicine and inventory timestamp',
+        async () => {
+          const marker = `combined_${randomUUID().replaceAll('-', '')}`;
+          const countBefore = await prisma.medicine.count({
+            where: { pharmacyId: pharmacyIds[0] },
+          });
+          const before = (
+            await prisma.pharmacy.findUniqueOrThrow({
+              where: { id: pharmacyIds[0] },
+            })
+          ).inventoryUpdatedAt;
+          await prisma.$executeRawUnsafe(
+            `CREATE FUNCTION "${marker}"() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN IF NEW."batchNumber" = '${marker}' THEN RAISE EXCEPTION 'test batch rejection'; END IF; RETURN NEW; END; $$`,
+          );
+          try {
+            await prisma.$executeRawUnsafe(
+              `CREATE TRIGGER "${marker}" BEFORE INSERT ON "Batch" FOR EACH ROW EXECUTE FUNCTION "${marker}"()`,
+            );
+            const failed = await call('POST', '/pharmacist/medicines', a, {
+              displayName: marker,
+              category: 'Demo',
+              reorderThreshold: 0,
+              initialBatch: { ...batchInput, batchNumber: marker },
+            });
+            assert.equal(failed.status, 500);
+            assert.equal(
+              await prisma.medicine.count({
+                where: { pharmacyId: pharmacyIds[0] },
+              }),
+              countBefore,
+            );
+            assert.equal(
+              (
+                await prisma.pharmacy.findUniqueOrThrow({
+                  where: { id: pharmacyIds[0] },
+                })
+              ).inventoryUpdatedAt?.getTime(),
+              before?.getTime(),
+            );
+          } finally {
+            await prisma.$executeRawUnsafe(
+              `DROP TRIGGER IF EXISTS "${marker}" ON "Batch"`,
+            );
+            await prisma.$executeRawUnsafe(
+              `DROP FUNCTION IF EXISTS "${marker}"()`,
+            );
+          }
+        },
+      );
     } finally {
       await app.close();
       await prisma.$transaction(async (tx) => {

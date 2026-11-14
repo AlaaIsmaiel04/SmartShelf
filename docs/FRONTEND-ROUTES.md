@@ -8,7 +8,7 @@ These are browser page URLs. Backend endpoints start with `/api` and are listed 
 | -------------------------------------------- | -------------------------------------------------------- | -------------- | ------------------------ |
 | `/`                                          | Welcome page linking search, directory and staff sign-in | Alaa           | Public, no sign-in       |
 | `/search`                                    | Medicine search                                          | Yousef         | Public, no sign-in       |
-| `/pharmacies`                                | Pharmacy directory                                       | Yousef         | Public, no sign-in       |
+| `/pharmacies`                                | Published Salamiyah duty roster                                       | Yousef         | Public, no sign-in       |
 | `/login`                                     | Shared staff sign-in                                     | Alaa           | Owner/pharmacist sign-in |
 | `/owner`                                     | Pharmacy list, onboarding and account creation           | Alaa           | OWNER                    |
 | `/owner/pharmacies/:pharmacyId/subscription` | Subscription editor                                      | Alaa           | OWNER                    |

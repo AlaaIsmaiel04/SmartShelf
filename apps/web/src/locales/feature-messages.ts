@@ -1,4 +1,13 @@
 export const featureArabic = {
+  'Add medicine and first batch': 'إضافة دواء والدفعة الأولى',
+  'First batch details': 'بيانات الدفعة الأولى',
+  'Medicine and first batch added successfully.':
+    'تمت إضافة الدواء والدفعة الأولى بنجاح.',
+  Day: 'اليوم',
+  Month: 'الشهر',
+  Year: 'السنة',
+  'Select day, month and year. Past dates are accepted for expired stock.':
+    'اختر اليوم والشهر والسنة. تُقبل التواريخ السابقة لتسجيل المخزون منتهي الصلاحية.',
   'Pharmacy not found.': 'الصيدلية غير موجودة.',
   'Subscription not found.': 'الاشتراك غير موجود.',
   'An account with this email already exists.':

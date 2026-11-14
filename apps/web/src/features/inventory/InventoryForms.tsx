@@ -6,16 +6,17 @@ import type {
   Batch,
   InventoryMedicine,
   MedicineInput,
+  CreateBatchInput,
 } from '@smartshelf/contracts';
 import type { InventoryService } from './inventory-api';
 import {
   calendarDate,
   decimalCost,
-  nonNegativeNumber,
   requiredText,
   wholeNumber,
 } from './inventory-validation';
 import { ApiRequestError } from '../../lib/api';
+import { ExpiryDateField } from './ExpiryDateField';
 
 export type InventoryEditor =
   | { kind: 'medicine'; medicine?: InventoryMedicine }
@@ -42,7 +43,10 @@ export function InventoryForm({
   const batch = editor.kind === 'batch' ? editor.batch : undefined;
   const medicine = editor.medicine;
   const editing = editor.kind === 'medicine' ? !!medicine : !!batch;
-  const title = `${editing ? 'Edit' : 'Add'} ${editor.kind === 'medicine' ? 'medicine' : 'batch'}`;
+  const combined = editor.kind === 'medicine' && !medicine;
+  const title = combined
+    ? 'Add medicine and first batch'
+    : `${editing ? 'Edit' : 'Add'} ${editor.kind === 'medicine' ? 'medicine' : 'batch'}`;
   const heading = useRef<HTMLHeadingElement>(null);
   const submitting = useRef(false);
   const [pending, setPending] = useState(false);
@@ -52,7 +56,6 @@ export function InventoryForm({
     displayName: medicine?.displayName ?? '',
     scientificName: medicine?.scientificName ?? '',
     category: medicine?.category ?? '',
-    reorderThreshold: String(medicine?.reorderThreshold ?? 0),
     batchNumber: batch?.batchNumber ?? '',
     quantity: String(batch?.quantity ?? 0),
     expiryDate: batch?.expiryDate ?? '',
@@ -72,21 +75,27 @@ export function InventoryForm({
     setError('');
     setPending(true);
     try {
+      const newBatch = (): CreateBatchInput => ({
+        batchNumber: requiredText(fields.batchNumber, 'Batch number'),
+        quantity: wholeNumber(fields.quantity, 'Quantity'),
+        expiryDate: calendarDate(fields.expiryDate),
+        storageLocation: requiredText(
+          fields.storageLocation,
+          'Storage location',
+        ),
+        unitCost: decimalCost(fields.unitCost),
+        ...(fields.barcode.trim() ? { barcode: fields.barcode.trim() } : {}),
+      });
       if (editor.kind === 'medicine') {
         const input: MedicineInput = {
           displayName: requiredText(fields.displayName, 'Display name'),
-          scientificName: requiredText(
-            fields.scientificName,
-            'Scientific name',
-          ),
+          scientificName: fields.scientificName.trim(),
           category: requiredText(fields.category, 'Category'),
-          reorderThreshold: nonNegativeNumber(
-            fields.reorderThreshold,
-            'Reorder threshold',
-          ),
+          reorderThreshold: medicine?.reorderThreshold ?? 0,
         };
         if (medicine) await service.updateMedicine(medicine.id, input);
-        else await service.createMedicine(input);
+        else
+          await service.createMedicine({ ...input, initialBatch: newBatch() });
       } else {
         const editable = {
           quantity: wholeNumber(fields.quantity, 'Quantity'),
@@ -97,18 +106,12 @@ export function InventoryForm({
           ),
         };
         if (batch) await service.updateBatch(batch.id, editable);
-        else
-          await service.createBatch(editor.medicine.id, {
-            ...editable,
-            batchNumber: requiredText(fields.batchNumber, 'Batch number'),
-            unitCost: decimalCost(fields.unitCost),
-            ...(fields.barcode.trim()
-              ? { barcode: fields.barcode.trim() }
-              : {}),
-          });
+        else await service.createBatch(editor.medicine.id, newBatch());
       }
       onSaved(
-        `${editor.kind === 'medicine' ? 'Medicine' : 'Batch'} ${editing ? 'updated' : 'added'} successfully.`,
+        combined
+          ? 'Medicine and first batch added successfully.'
+          : `${editor.kind === 'medicine' ? 'Medicine' : 'Batch'} ${editing ? 'updated' : 'added'} successfully.`,
       );
     } catch (reason) {
       setError(
@@ -152,7 +155,7 @@ export function InventoryForm({
               'batchNumber',
               'barcode',
             ].includes(name)
-              ? 'ltr'
+              ? 'auto'
               : undefined
           }
           type={options.type ?? 'text'}
@@ -200,18 +203,25 @@ export function InventoryForm({
           {editor.kind === 'medicine' ? (
             <>
               {field('displayName', 'Display name')}
-              {field('scientificName', 'Scientific name')}
+              {field('scientificName', 'Scientific name', { optional: true })}
               {field('category', 'Category')}
-              {field('reorderThreshold', 'Reorder threshold', {
-                type: 'number',
-                step: 'any',
-              })}
             </>
-          ) : (
+          ) : null}
+          {(combined || editor.kind === 'batch') && (
             <>
+              {combined && (
+                <h4 className="inventory-form-section-title">
+                  {t('First batch details')}
+                </h4>
+              )}
               {field('batchNumber', 'Batch number', { immutable: !!batch })}
               {field('quantity', 'Quantity', { type: 'number', integer: true })}
-              {field('expiryDate', 'Expiry date', { type: 'date' })}
+              <ExpiryDateField
+                value={fields.expiryDate}
+                onChange={(expiryDate) =>
+                  setFields((previous) => ({ ...previous, expiryDate }))
+                }
+              />
               {field('storageLocation', 'Storage location')}
               {field('unitCost', 'Unit purchase cost', {
                 type: 'number',

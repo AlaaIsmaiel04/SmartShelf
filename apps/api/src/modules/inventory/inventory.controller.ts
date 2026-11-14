@@ -33,6 +33,7 @@ import {
 import type { ActorRequest } from '../../common/security';
 import {
   CreateBatchDto,
+  CreateMedicineDto,
   InventoryQueryDto,
   MedicineDto,
   UpdateBatchDto,
@@ -70,16 +71,21 @@ export class InventoryController {
 
   @Post('medicines')
   @UseGuards(ActiveSubscriptionGuard)
-  @ApiOperation({ summary: 'Create an own-pharmacy medicine' })
+  @ApiOperation({
+    summary:
+      'Create an own-pharmacy medicine with an optional first batch in one transaction',
+  })
   @ApiCreatedResponse({ type: MedicineResponseDto })
-  createMedicine(@Req() request: ActorRequest, @Body() dto: MedicineDto) {
+  createMedicine(@Req() request: ActorRequest, @Body() dto: CreateMedicineDto) {
     return this.inventory.createMedicine(request.actor, dto);
   }
 
   @Patch('medicines/:id')
   @UseGuards(OwnershipGuard, ActiveSubscriptionGuard)
   @OwnResource('medicine')
-  @ApiOperation({ summary: 'Replace all four editable medicine fields' })
+  @ApiOperation({
+    summary: 'Update medicine details; scientific name may be omitted or empty',
+  })
   @ApiOkResponse({ type: MedicineResponseDto })
   updateMedicine(
     @Req() request: ActorRequest,

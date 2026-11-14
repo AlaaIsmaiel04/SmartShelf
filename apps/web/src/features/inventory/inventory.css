@@ -252,6 +252,56 @@
   margin: 24px 0;
   min-width: 0;
 }
+.inventory-form-fields .inventory-form-section-title {
+  grid-column: 1 / -1;
+  margin: 8px 0 0;
+  padding-block-start: 16px;
+  border-top: 1px solid var(--border);
+  font-size: 17px;
+}
+.inventory-form-fields > label {
+  align-self: start;
+}
+.inventory-form-fields .expiry-date-control {
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+.expiry-date-control legend {
+  padding: 0;
+  margin-block-end: 8px;
+  font-weight: 700;
+}
+.expiry-date-parts {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 8px;
+}
+.expiry-date-parts label {
+  min-width: 0;
+}
+.expiry-date-parts label > span {
+  font-size: 12px;
+  color: var(--muted);
+}
+.expiry-date-parts select {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 10px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  color: var(--foreground);
+  font: inherit;
+}
+.expiry-date-control small {
+  display: block;
+  margin-block-start: 8px;
+  color: var(--muted);
+  font-size: 12px;
+}
 .inventory-editor {
   max-width: 760px;
   width: 100%;

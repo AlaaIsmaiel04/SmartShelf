@@ -1,4 +1,18 @@
-# Current integration update — 10 November 2026
+# Current product update — 14 November 2026
+
+This section supersedes older implementation and dependency statements below. All six members' core feature areas are integrated; no backend handoff is currently blocking Alaa.
+
+- Medicine creation includes the first batch in one database transaction. Scientific name is optional. The reorder-threshold input is removed; new medicines use zero and edits preserve an existing threshold. Later batches still have their own form. Localized day/month/year selectors accept valid past expiry dates for waste tracking.
+- Public service area is Syria / Hama / Salamiyah. `/pharmacies` shows the supplied published roster for 14–27 November 2026, with names, addresses, dates and noon/evening labels. Exact duty hours were not supplied; the page does not infer current on-duty status from these labels.
+- `/search` opens with clearly labeled fictional demo medicines/pharmacies. The explicit live-search button uses persisted stock and subscription rules. The fictional results and published duty roster are separate from registered pharmacy accounts and stock.
+- The compact interface supports EN/AR, RTL, light/dark buttons, responsive workspace drawers and the current parchment/green/saffron design.
+- Latest review and evidence: [FINAL-REVIEW.md](FINAL-REVIEW.md). Older reports remain evidence for their recorded code/data, not proof that later public UI changes were present then.
+
+Remaining: independent laptop setup, actual team acceptance, Day 13 scope freeze/English rehearsal, and Day 14 final demo-data/date/setup review and each member's participation. Prepared scripts do not complete these human checks.
+
+---
+
+# Integration checkpoint — 10 November 2026
 
 This update supersedes all dependency statements in the historical checkpoints below. Shiam's owner backend and search/acceptance fixes are merged, alongside Mustafa's authentication/inventory, Mohammad's dashboard/profile integration and Hamid's duty/public APIs. Baseline: merged main `92fd554`, plus the uncommitted Day 8–9 integration follow-up.
 

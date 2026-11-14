@@ -1,0 +1,27 @@
+{
+  "date": "2026-11-14",
+  "isolatedDatabase": true,
+  "developmentDatabaseUntouched": true,
+  "results": [
+    {
+      "name": "migration",
+      "passed": true
+    },
+    {
+      "name": "database",
+      "passed": true
+    },
+    {
+      "name": "seed",
+      "passed": true
+    },
+    {
+      "name": "smoke",
+      "passed": true
+    },
+    {
+      "name": "browser",
+      "passed": true
+    }
+  ]
+}

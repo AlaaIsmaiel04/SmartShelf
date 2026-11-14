@@ -105,6 +105,14 @@ export interface CreateBatchInput {
   barcode?: string;
 }
 
+export interface CreateMedicineInput extends Omit<
+  MedicineInput,
+  'scientificName'
+> {
+  scientificName?: string;
+  initialBatch?: CreateBatchInput;
+}
+
 // The remaining creation fields cannot be edited after batch creation.
 export type UpdateBatchInput = Pick<
   CreateBatchInput,

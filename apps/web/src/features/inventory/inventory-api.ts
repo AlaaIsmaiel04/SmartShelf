@@ -1,6 +1,7 @@
 import type {
   Batch,
   CreateBatchInput,
+  CreateMedicineInput,
   InventoryMedicine,
   InventoryFilters,
   InventoryResponse,
@@ -14,7 +15,7 @@ export interface InventoryService {
     filters: InventoryFilters,
     signal?: AbortSignal,
   ) => Promise<InventoryResponse>;
-  createMedicine: (input: MedicineInput) => Promise<InventoryMedicine>;
+  createMedicine: (input: CreateMedicineInput) => Promise<InventoryMedicine>;
   updateMedicine: (
     id: string,
     input: MedicineInput,

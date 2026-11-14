@@ -22,4 +22,4 @@ Use [LOCAL-SETUP.md](LOCAL-SETUP.md) and the README as the actual setup instruct
 | Data survives backend restart                                                | Pending           |
 | Working tree contains no accidental environment/dependency/build files       | Pending           |
 
-Record error messages with passwords/tokens/connection strings removed. Include the fix or assigned owner for any failed step. Real owner administration remains blocked until Shiam's backend merges; report that limitation rather than substituting preview results. Stop the development servers after the check.
+Record error messages with passwords/tokens/connection strings removed. Include the fix or assigned owner for any failed step. Shiam's owner backend is merged: test real owner onboarding/subscriptions. At `/search`, choose Use live search for real database acceptance; default demo results are fictional. `/pharmacies` is the published Salamiyah roster, separate from the backend's registered-pharmacy directory API. Stop the development servers after the check.

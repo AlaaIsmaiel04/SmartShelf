@@ -13,7 +13,7 @@ Day 1 starts when the reviewed foundation is shared. These are relative days, no
 | Yousef   | Simpler frontend                  | Citizen search/directory pages and public pharmacy cards                          |
 | Alaa     | Remaining frontend + coordination | Shared routing/layout/styles/components, sign-in, owner/inventory UI, integration |
 
-The repository contains configuration and empty work areas only. No product screens, components, forms, adapters, fixtures, schema models, seed records, guards or business helpers are supplied. Members own design and implementation, not just finishing generated features.
+This is the original assignment plan. The foundation-only stage is complete: product screens, APIs, schema, authentication, calculations and tests are now implemented and integrated. See ALAA-PROGRESS.md and FINAL-REVIEW.md for current status; the individual guides retain the original responsibilities.
 
 ## Reduce dependencies
 

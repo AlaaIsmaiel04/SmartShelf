@@ -1,5 +1,7 @@
 # Day 12 acceptance report
 
+> Current product note (14 November 2026): see [FINAL-REVIEW.md](FINAL-REVIEW.md) for the combined medicine/first-batch workflow, explicit demo/live search split and published Salamiyah roster. Earlier evidence below retains its original scope. Independent laptop/team gates remain open.
+
 Updated 10 November 2026 on `alaa`, baseline main `92fd554` plus the Day 8–9 integration follow-up.
 
 **Outcome: automated acceptance, including the real owner-to-public workflow, is complete. Full Day 12 remains open for another member's laptop and the actual team acceptance session.** Shiam's backend is merged and is no longer a dependency.
