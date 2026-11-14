@@ -1,0 +1,14 @@
+{
+  "date": "2026-11-14",
+  "responses": "Real HTTP/JWT/PostgreSQL for owner, stock, dashboard, live public search; explicit demo and published roster checked separately",
+  "checks": [
+    "Real owner creates Salamiyah pharmacy, pharmacist and active subscription",
+    "New pharmacist creates medicine and first batch in one real request, scientific name blank",
+    "Dashboard reflects persisted medicine, 12 units and 30.00 inventory value",
+    "Explicit live public search finds the newly persisted Salamiyah stock",
+    "Owner suspension blocks real writes and removes live public visibility; reactivation restores access",
+    "English/Arabic, both themes, mobile owner and pharmacist layouts preserve session",
+    "Citizen default demo is clearly marked; published roster has four entries on 14 November"
+  ],
+  "browserErrors": []
+}

@@ -1,14 +1,14 @@
 # English / Arabic interface
 
-Alaa took over Hamid's Day 11 task at the user's request on 4 November 2026. The language foundation was built independently; Mustafa's APIs are now merged and Shiam's owner APIs remain pending. The Figma styling and language changes are delivered together.
+Alaa took over Hamid's Day 11 task at the user's request on 4 November 2026. The language foundation was built independently; Mustafa's and Shiam's APIs are now merged and real owner-to-stock workflows are verified. The Figma styling and language changes are delivered together.
 
 ## Implemented
 
-- Direct English/العربية button switch in the public and workspace headers, with a sliding selected background and localized action label. Tab and Enter/Space work without opening a dropdown.
+- Direct English/العربية button switch in the public header and workspace sidebar, with a sliding selected background and localized action label. Tab and Enter/Space work without opening a dropdown.
 - Persistent English/Arabic preference, safe fallback to English if browser storage is unavailable or contains an invalid value.
 - Typed translation keys with English defaults and Arabic copy for navigation, shared shell/footer, sign-in, known sign-in/session messages, existing route placeholders, and the owner/inventory screens and forms.
 - Document `lang` and `dir` set on startup and updated before paint on selection. Arabic mirrors the workspace sidebar and direction-aware grids; English restores the original layout.
-- Explicit LTR treatment for medicine/scientific names, phone numbers, credentials, batch identifiers, barcodes and wire-format dates/costs. Data is neither translated nor reformatted for API submission.
+- Automatic text direction for medicine/scientific names and batch/barcode entry; identifiers, phone numbers, credentials and wire-format dates/costs retain appropriate LTR treatment. Data is neither translated nor reformatted for API submission.
 - Language changes preserve unsaved login/inventory fields. No authentication, role, subscription or API fallback behavior was changed.
 
 ## Extend the dictionary
@@ -21,7 +21,7 @@ Use `translateMessage` only for known application messages; unknown server detai
 
 Owner/inventory labels, forms, help text, statuses, counts, confirmation dialogs, local validation, success feedback and development-preview controls now translate on selection. Messages stored in component state stay in their canonical form so they also translate when the language changes after an error or successful save. Dynamic pharmacy/account success messages store a key and parameters instead of a sentence in the previous language.
 
-User-entered values, pharmacy names/addresses, medicine names/categories and batch data stay exactly as supplied. Unknown server error details remain visible in their original language; a translation cannot safely be invented for an arbitrary backend message. Native browser validation messages follow the browser's own language. Dashboard/profile/duty screens now translate labels, validation and feedback through pharmacist-messages.ts, preserving drafts. Their real API browser flows and RTL layouts passed at 320/390/768/1440px. Public search/directory also use the shared language provider. Hamid's Light/Dark/System implementation is now connected to both headers alongside the language selector.
+User-entered values, pharmacy names/addresses, medicine names/categories and batch data stay exactly as supplied. Unknown server error details remain visible in their original language; a translation cannot safely be invented for an arbitrary backend message. Native browser validation messages follow the browser's own language. Dashboard/profile/duty screens now translate labels, validation and feedback through pharmacist-messages.ts, preserving drafts. Their real API browser flows and RTL layouts passed at 320/390/768/1440px. Public search/directory also use the shared language provider. Hamid's theme provider is integrated. Current light/dark buttons sit in the public header and workspace sidebar; System remains a provider preference. Scientific name is optional and expiry uses translated day/month/year selectors.
 
 ## Checks
 
@@ -33,4 +33,4 @@ On 5 November 2026, Arabic owner/inventory workflows passed browser checks: sear
 
 The earlier check counts above describe the original language rollout. The current app has 23 passing frontend tests, including language fallback/interpolation and theme storage/system behavior. `ThemeProvider` sits inside `LanguageProvider`; `theme.css` loads after the shared styling, and the inline boot script restores the theme before React loads.
 
-The current headers use direct sun/moon and English/العربية switches. Theme follows the device by default until a Light/Dark preference is saved; there is no longer a System dropdown choice. Theme changes preserve unsaved forms and the in-memory sign-in session. Saved theme and language are independent. Blocked storage leaves both controls usable with safe fallbacks. The original integration checks cover EN/AR, both themes, keyboard controls, first-paint theme, draft/session preservation and 320/390/768/1024/1440 layouts. Evidence: `output/theme/browser-checks.json`. Owner form evidence uses previews; public/pharmacist reads use a separate real database. Full owner integration and team rehearsal remain pending.
+The current headers use direct sun/moon and English/العربية switches. Theme follows the device by default until a Light/Dark preference is saved; there is no longer a System dropdown choice. Theme changes preserve unsaved forms and the in-memory sign-in session. Saved theme and language are independent. Blocked storage leaves both controls usable with safe fallbacks. The original integration checks cover EN/AR, both themes, keyboard controls, first-paint theme, draft/session preservation and 320/390/768/1024/1440 layouts. Evidence: `output/theme/browser-checks.json`. Owner form evidence uses previews; public/pharmacist reads use a separate real database. Real owner integration is complete. Independent laptop and team rehearsal remain pending; see FINAL-REVIEW.md.

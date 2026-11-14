@@ -6,9 +6,9 @@ Prepared for Days 13–14. This is a rehearsal plan, not evidence that the produ
 
 - Freeze optional scope. Use the final teacher specification and `ACCEPTANCE.md`.
 - Run typecheck, tests, build, database acceptance and smoke; fix failures before the demo. Smoke checks implemented routes, Swagger, protected access and public reads. See `DAY-12-ACCEPTANCE.md` for current results and remaining gates.
-- Follow Mustafa's merged migration/seed instructions on a dedicated local PostgreSQL database. Confirm the seed's actual dates match the demo day in Asia/Amman, including active/expired subscriptions, expiry boundaries and overnight duty.
+- Follow Mustafa's merged migration/seed instructions on a dedicated local PostgreSQL database. Confirm the seed's actual dates match the demo day in Asia/Damascus, including active/expired subscriptions, expiry boundaries and overnight duty.
 - Use actual seeded credentials privately. Never put passwords or tokens in slides, screenshots, logs or this document.
-- Confirm the full flow with real requests. Development fixture routes do not demonstrate persistence or backend rules.
+- Confirm the full flow with real requests, including the combined medicine/first-batch form. At `/search`, explicitly select Use live search to demonstrate real stock; the default fictional demo is only a visual sample. `/pharmacies` shows the published 14–27 November roster with shift labels, not exact hours or live stock. Development fixture routes do not demonstrate persistence or backend rules.
 - Have a second member start the application from the README on their laptop. Check `git ls-files` for accidentally tracked secrets, dependencies or build output before submission.
 
 ## Speaking order
@@ -20,9 +20,9 @@ Prepared for Days 13–14. This is a rehearsal plan, not evidence that the produ
 | Mustafa   | Sign in as that pharmacist, add medicine/batch; show protected Swagger and pharmacy scoping                                        |
 | Mohammad  | Show real dashboard metrics and simultaneous indicators; explain available value versus expired waste; demonstrate profile/duty UI |
 | Hamid     | Explain overnight duty/overlap rejection and inspect the public response allowlist                                                 |
-| Yousef    | Search publicly with area/on-duty filters, show contact information and a no-results state                                         |
+| Yousef    | Show explicit live medicine search in Salamiyah and a no-results state; distinguish demo results and the published duty roster                                         |
 
-Then return to Shiam/Mustafa to suspend or delete the subscription. Show that a pharmacist can still read but a direct API write is rejected, the public listing disappears, and pharmacy inventory remains stored. Restart the backend and show persistence. Every presenter should understand the complete flow and answer questions outside their assigned screen.
+Then return to Shiam/Mustafa to suspend or delete the subscription. Show that a pharmacist can still read but a direct API write is rejected, the pharmacy disappears from live medicine search and the registered-pharmacy directory API (the published duty roster is unchanged), and pharmacy inventory remains stored. Restart the backend and show persistence. Every presenter should understand the complete flow and answer questions outside their assigned screen.
 
 ## Alaa's short segment
 
@@ -43,4 +43,4 @@ End with one limitation actually present in the final build. Do not claim unfini
 - [ ] Clean setup proven on another member's laptop.
 - [ ] All six members have rehearsed in English and understand one business rule.
 - [ ] README reflects actual merged setup, credentials provisioning and limitations.
-- [ ] Figma implementation starts after these functional dependencies are resolved, as agreed.
+- [ ] Current visual design, mobile navigation and EN/AR/light/dark checks are reviewed; historical Figma notes are not remaining dependencies.

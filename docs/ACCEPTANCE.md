@@ -1,5 +1,7 @@
 # Core acceptance checklist
 
+> Current product note (14 November 2026): see [FINAL-REVIEW.md](FINAL-REVIEW.md) for the combined medicine/first-batch workflow, explicit demo/live search split and published Salamiyah roster. Earlier evidence below retains its original scope. Independent laptop/team gates remain open.
+
 Run against real endpoints and a dedicated PostgreSQL database. Implemented APIs, including owner administration, now have real HTTP/PostgreSQL coverage. The full owner-to-stock-to-public browser workflow is verified; another laptop and actual team acceptance remain open. The current per-scenario results and evidence are in [Day 12 acceptance](DAY-12-ACCEPTANCE.md). API owners maintain meaningful rule tests; Alaa coordinates the final full-flow demo. Freeze the test clock for date boundaries. A passing fixture test does not replace real endpoint acceptance or the team rehearsal.
 
 | ID  | Required scenario                                                                                                                          | Main owner                |

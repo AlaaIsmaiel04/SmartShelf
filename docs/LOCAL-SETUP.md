@@ -48,7 +48,7 @@ All seed accounts use the local demonstration password `DemoPass123!`.
 
 The seed creates four pharmacies in two areas, 16 medicines, 24 batches (including expired stock and zero quantity), and one overnight duty period. It uses stable IDs and upserts without updates: rerunning preserves existing edits. Dates are relative to the first seed run; reruns do not refresh them. An expired subscription may still sign in and read inventory, but every inventory mutation returns 403.
 
-Dashboard, inventory, profile, duty, public directory and medicine search use the real JWT/Prisma/PostgreSQL foundation. Public search is connected to persisted stock. Owner login works, but owner administration still requires Shiam's endpoints. The Light/Dark/System selector is connected in both application headers.
+Owner administration, dashboard, inventory, profile, duty and public APIs use the real JWT/Prisma/PostgreSQL foundation. At `/search`, select Use live search to test persisted stock in Salamiyah; default results are explicitly fictional. The standard seed's North/South pharmacies do not match the fixed Salamiyah filter: create a Salamiyah pharmacy/account/subscription through the owner, then add stock as that pharmacist for a live search demonstration. `/pharmacies` shows the published Salamiyah November roster independently of the database. Public-header and workspace-sidebar buttons switch language and light/dark theme.
 
 ## Verification
 

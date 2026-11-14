@@ -1,5 +1,7 @@
 # Mohammad integration and fixes - 5 November 2026
 
+> Current status (14 November 2026): this is historical integration evidence. Shiam's owner backend, persisted public search, public frontend and themes are now integrated. Business dates now use Asia/Damascus. See FINAL-REVIEW.md for current results; the limits below describe the original 5 November checkpoint.
+
 ## Implemented
 
 - Reconciled branch Mohammad with main while keeping the current authentication, schema, inventory, shell, CI and language foundations.

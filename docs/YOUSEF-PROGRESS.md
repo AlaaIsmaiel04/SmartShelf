@@ -1,3 +1,11 @@
+# Current public frontend — 14 November 2026
+
+The original delivery record below is historical. Owner/backend dependencies are integrated. Current `/search` defaults to explicit fictional sample data and switches to real stock only through Use live search. `/pharmacies` now displays the published Salamiyah duty roster for 14–27 November 2026. Registered-pharmacy directory data remains available through the backend API; published roster entries are not automatically accounts or medicine stock.
+
+The service area is fixed to Syria / Hama / Salamiyah and business dates use Asia/Damascus. All public labels support English/Arabic; mobile and light/dark checks are recorded in FINAL-REVIEW.md. Yousef still needs to understand the delivered code and personally participate in the team rehearsal/presentation. Independent laptop and physical-device checks remain open.
+
+---
+
 # Yousef scope: implementation and handoff
 
 Updated 7 November 2026 after Hamid's PR #18 and Alaa's theme integration. Implemented by Codex at Alaa's request on `alaa`; this does not attribute commits or a presentation to Yousef.
