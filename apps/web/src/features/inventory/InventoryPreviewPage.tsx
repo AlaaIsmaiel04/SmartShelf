@@ -247,10 +247,21 @@ export function InventoryPreviewPage() {
         await beforeSave();
         writable();
         uniqueName(input.displayName);
+        const { initialBatch, ...details } = input;
         const medicine: InventoryMedicine = {
-          ...input,
+          ...details,
+          scientificName: details.scientificName ?? '',
           id: crypto.randomUUID(),
-          batches: [],
+          batches: initialBatch
+            ? [
+                {
+                  ...initialBatch,
+                  id: crypto.randomUUID(),
+                  barcode: initialBatch.barcode ?? null,
+                  indicators: [],
+                },
+              ]
+            : [],
           availableQuantity: 0,
           indicators: ['LOW_STOCK'],
         };

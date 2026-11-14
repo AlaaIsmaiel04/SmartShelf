@@ -1,8 +1,9 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
   IsIn,
   IsInt,
+  IsObject,
   IsNumber,
   IsOptional,
   IsString,
@@ -11,6 +12,7 @@ import {
   Min,
   MinLength,
   ValidateIf,
+  ValidateNested,
 } from 'class-validator';
 
 const trim = ({ value }: { value: unknown }) =>
@@ -23,11 +25,11 @@ export class MedicineDto {
   @MinLength(1)
   displayName!: string;
 
-  @ApiProperty({ example: 'Paracetamol' })
+  @ApiPropertyOptional({ example: 'Paracetamol' })
+  @ValidateIf((_object, value) => value !== undefined)
   @Transform(trim)
   @IsString()
-  @MinLength(1)
-  scientificName!: string;
+  scientificName?: string;
 
   @ApiProperty({ example: 'Pain relief' })
   @Transform(trim)
@@ -98,4 +100,16 @@ export class CreateBatchDto extends UpdateBatchDto {
   @Transform(trim)
   @IsString()
   barcode?: string;
+}
+
+export class CreateMedicineDto extends MedicineDto {
+  @ApiPropertyOptional({
+    type: CreateBatchDto,
+    description: 'First batch, saved atomically with the medicine.',
+  })
+  @ValidateIf((_object, value) => value !== undefined)
+  @IsObject()
+  @ValidateNested()
+  @Type(() => CreateBatchDto)
+  initialBatch?: CreateBatchDto;
 }

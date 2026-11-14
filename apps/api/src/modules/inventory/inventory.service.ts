@@ -19,6 +19,7 @@ import { effectiveSubscriptionStatus } from '../../common/subscription-status';
 import { PrismaService } from '../../prisma/prisma.service';
 import {
   CreateBatchDto,
+  CreateMedicineDto,
   InventoryQueryDto,
   MedicineDto,
   UpdateBatchDto,
@@ -121,13 +122,32 @@ export class InventoryService {
     }
   }
 
-  createMedicine(actor: Actor, dto: MedicineDto): Promise<InventoryMedicine> {
+  createMedicine(
+    actor: Actor,
+    dto: CreateMedicineDto,
+  ): Promise<InventoryMedicine> {
     return this.mutate(actor, async (tx, pharmacyId, today) => {
+      const { initialBatch, ...input } = dto;
       const medicine = await tx.medicine.create({
         data: {
-          ...dto,
+          ...input,
+          scientificName: input.scientificName ?? '',
           normalizedName: dto.displayName.toLowerCase(),
           pharmacyId,
+          ...(initialBatch
+            ? {
+                batches: {
+                  create: {
+                    batchNumber: initialBatch.batchNumber,
+                    quantity: initialBatch.quantity,
+                    expiryDate: parseCalendarDate(initialBatch.expiryDate),
+                    storageLocation: initialBatch.storageLocation,
+                    unitCost: new Prisma.Decimal(initialBatch.unitCost),
+                    barcode: initialBatch.barcode || null,
+                  },
+                },
+              }
+            : {}),
         },
         include: { batches: true },
       });
@@ -154,7 +174,11 @@ export class InventoryService {
       }
       const medicine = await tx.medicine.update({
         where: { id },
-        data: { ...dto, normalizedName: dto.displayName.toLowerCase() },
+        data: {
+          ...dto,
+          scientificName: dto.scientificName ?? '',
+          normalizedName: dto.displayName.toLowerCase(),
+        },
         include: { batches: true },
       });
       return toMedicine(medicine, today);

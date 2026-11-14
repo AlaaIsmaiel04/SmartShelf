@@ -1,5 +1,11 @@
 # Inventory frontend — Alaa
 
+## Combined medicine and first batch
+
+Add medicine now opens a single form: display name, optional scientific name, category, then batch number, quantity, expiry, storage, unit cost and optional barcode. Saving sends one POST with a nested `initialBatch`; the backend saves both records atomically. The reorder-threshold field is hidden: new medicines send zero and edits preserve the stored threshold. Medicine-only editing and adding later batches remain separate actions.
+
+Expiry uses localized day/month/year selectors rather than an ambiguous numeric date placeholder. Day choices follow the selected month and year, including leap years; changing the month/year clamps a selected day to that month's last valid day. Past expiry dates remain accepted for accurate expired-stock tracking. Arabic/English, disabled/subscription states, field drafts and existing error handling remain supported.
+
 ## Day 5
 
 The protected `/pharmacist/inventory` page lists the signed-in pharmacist's
