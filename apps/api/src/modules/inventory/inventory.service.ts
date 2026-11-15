@@ -185,6 +185,24 @@ export class InventoryService {
     });
   }
 
+  removeMedicine(actor: Actor, id: string): Promise<void> {
+    return this.mutate(actor, async (tx, pharmacyId) => {
+      const medicine = await tx.medicine.findFirst({
+        where: { id, pharmacyId },
+        select: { id: true },
+      });
+      if (!medicine) {
+        logAccessRejection('resource_not_owned_or_missing', actor, {
+          resourceKind: 'medicine',
+          resourceId: id,
+        });
+        throw new NotFoundException('Medicine not found in your pharmacy.');
+      }
+      await tx.batch.deleteMany({ where: { medicineId: id } });
+      await tx.medicine.delete({ where: { id, pharmacyId } });
+    });
+  }
+
   createBatch(
     actor: Actor,
     medicineId: string,

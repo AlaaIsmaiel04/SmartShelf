@@ -36,6 +36,7 @@ Use the [frontend routes](FRONTEND-ROUTES.md) and [Day 1 agreements](DAY-1-AGREE
 | GET /pharmacist/medicines?q=&status=      | Mustafa       | Own PHARMACIST; inactive may read        | InventoryResponse            |
 | POST /pharmacist/medicines                | Mustafa       | Active own; CreateMedicineInput          | InventoryMedicine            |
 | PATCH /pharmacist/medicines/:id           | Mustafa       | Active own; MedicineInput, all fields    | InventoryMedicine            |
+| DELETE /pharmacist/medicines/:id          | Mustafa       | Active own; UUID                         | 204; remove medicine and batches atomically |
 | POST /pharmacist/medicines/:id/batches    | Mustafa       | Active own; CreateBatchInput             | Batch                        |
 | PATCH /pharmacist/batches/:id             | Mustafa       | Active own; UpdateBatchInput, all fields | Batch                        |
 | GET /pharmacist/dashboard                 | Mohammad      | Own PHARMACIST; inactive may read        | Dashboard                    |

@@ -1,4 +1,18 @@
 export const featureArabic = {
+  'Restoring your session…': 'جارٍ استعادة جلسة تسجيل الدخول…',
+  'Unable to verify your saved session. Check your connection and try again.':
+    'تعذر التحقق من جلستك المحفوظة. تحقق من الاتصال وحاول مجدداً.',
+  'Try again': 'حاول مجدداً',
+  'Continue signed out': 'المتابعة دون تسجيل الدخول',
+  'This will permanently remove this medicine and all its batches. This cannot be undone.':
+    'سيُحذف هذا الدواء وجميع دفعاته نهائياً. لا يمكن التراجع عن هذا الإجراء.',
+  'Remove medicine': 'حذف الدواء',
+  'Remove {name} and all its batches permanently? This cannot be undone.':
+    'هل تريد حذف {name} وجميع دفعاته نهائياً؟ لا يمكن التراجع عن هذا الإجراء.',
+  'Medicine removed successfully.': 'تم حذف الدواء بنجاح.',
+  'Unable to remove medicine. Please try again.':
+    'تعذر حذف الدواء. يرجى المحاولة مجدداً.',
+  'Removing medicine…': 'جارٍ حذف الدواء…',
   'Add medicine and first batch': 'إضافة دواء والدفعة الأولى',
   'First batch details': 'بيانات الدفعة الأولى',
   'Medicine and first batch added successfully.':

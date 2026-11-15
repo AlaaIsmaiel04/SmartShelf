@@ -1,17 +1,21 @@
 import { useLanguage } from '../preferences/LanguageProvider';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
+import { Trash2 } from 'lucide-react';
 import type {
   BatchIndicator,
   Indicator,
   InventoryFilters,
   InventoryResponse,
+  InventoryMedicine,
   SubscriptionStatus,
 } from '@smartshelf/contracts';
 import { useAuth } from '../auth/AuthProvider';
 import { createInventoryService } from './inventory-api';
 import type { InventoryService } from './inventory-api';
+import { ApiRequestError } from '../../lib/api';
 import { InventoryForm } from './InventoryForms';
+import { RemoveMedicineDialog } from './RemoveMedicineDialog';
 import type { InventoryEditor } from './InventoryForms';
 import {
   notifyInventoryChanged,
@@ -58,7 +62,18 @@ export function InventoryPage() {
 }
 
 export function InventoryView({ service }: { service: InventoryService }) {
-  const { t, translateMessage } = useLanguage();
+  const { t, translateMessage, language } = useLanguage();
+  const quantityFormat = new Intl.NumberFormat('en-GB');
+  const expiryFormat = new Intl.DateTimeFormat(
+    language === 'ar' ? 'ar-SY' : 'en-GB',
+    {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      timeZone: 'UTC',
+      numberingSystem: 'latn',
+    },
+  );
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState<Indicator | ''>('');
   const [filters, setFilters] = useState<InventoryFilters>({});
@@ -69,10 +84,47 @@ export function InventoryView({ service }: { service: InventoryService }) {
   const stockRevision = useInventoryRevision();
   const [editor, setEditor] = useState<InventoryEditor | null>(null);
   const [notice, setNotice] = useState('');
+  const [removingId, setRemovingId] = useState<string | null>(null);
+  const [removeError, setRemoveError] = useState('');
+  const [removeTarget, setRemoveTarget] = useState<{
+    medicine: InventoryMedicine;
+    trigger: HTMLButtonElement;
+  } | null>(null);
+  const removing = useRef(false);
   const heading = useRef<HTMLHeadingElement>(null);
   const trigger = useRef<HTMLButtonElement | null>(null);
   const restoreFocus = useRef(false);
-  const active = !loading && !error && result?.subscriptionStatus === 'ACTIVE';
+  const active =
+    !loading &&
+    !error &&
+    !removingId &&
+    result?.subscriptionStatus === 'ACTIVE';
+
+  async function removeMedicine(medicine: InventoryMedicine) {
+    if (!active || editor || removing.current) return;
+    removing.current = true;
+    setRemovingId(medicine.id);
+    setRemoveError('');
+    setNotice('');
+    try {
+      await service.removeMedicine(medicine.id);
+      setNotice('Medicine removed successfully.');
+      setRemoveTarget(null);
+      notifyInventoryChanged();
+      requestAnimationFrame(() => heading.current?.focus());
+    } catch (reason) {
+      setRemoveError(
+        reason instanceof Error
+          ? reason.message
+          : 'Unable to remove medicine. Please try again.',
+      );
+      if (reason instanceof ApiRequestError && reason.status === 403)
+        setRevision((value) => value + 1);
+    } finally {
+      removing.current = false;
+      setRemovingId(null);
+    }
+  }
 
   useEffect(() => {
     const refresh = () => setRevision((value) => value + 1);
@@ -83,6 +135,7 @@ export function InventoryView({ service }: { service: InventoryService }) {
   function openEditor(value: InventoryEditor, button: HTMLButtonElement) {
     trigger.current = button;
     setNotice('');
+    setRemoveError('');
     setEditor(value);
   }
 
@@ -133,6 +186,21 @@ export function InventoryView({ service }: { service: InventoryService }) {
 
   return (
     <div className="inventory-page">
+      {removeTarget && (
+        <RemoveMedicineDialog
+          name={removeTarget.medicine.displayName}
+          batchCount={removeTarget.medicine.batches.length}
+          pending={!!removingId}
+          allowed={active}
+          error={removeError}
+          returnFocus={removeTarget.trigger}
+          onConfirm={() => void removeMedicine(removeTarget.medicine)}
+          onCancel={() => {
+            setRemoveTarget(null);
+            setRemoveError('');
+          }}
+        />
+      )}
       <header>
         <h2 ref={heading} tabIndex={-1}>
           {t('Medicine inventory')}
@@ -147,6 +215,14 @@ export function InventoryView({ service }: { service: InventoryService }) {
         <p role="status" className="inventory-success">
           {translateMessage(notice)}
         </p>
+      )}
+      {removeError && !removeTarget && (
+        <p className="form-error" role="alert">
+          {translateMessage(removeError)}
+        </p>
+      )}
+      {removingId && !removeTarget && (
+        <p role="status">{t('Removing medicine…')}</p>
       )}
       <div className="inventory-actions">
         <button
@@ -294,7 +370,6 @@ export function InventoryView({ service }: { service: InventoryService }) {
                   <span>{t('Medicine / scientific name')}</span>
                   <span>{t('Category')}</span>
                   <span>{t('Available')}</span>
-                  <span>{t('Reorder at')}</span>
                   <span>{t('Indicators')}</span>
                   <span>{t('Actions')}</span>
                 </li>
@@ -305,12 +380,14 @@ export function InventoryView({ service }: { service: InventoryService }) {
                       aria-labelledby={`medicine-${medicine.id}`}
                     >
                       <div className="inventory-identity">
-                        <h3 id={`medicine-${medicine.id}`} dir="ltr">
-                          {medicine.displayName}
+                        <h3 id={`medicine-${medicine.id}`}>
+                          <bdi dir="auto">{medicine.displayName}</bdi>
                         </h3>
-                        <p className="inventory-scientific" dir="ltr">
-                          {medicine.scientificName}
-                        </p>
+                        {medicine.scientificName && (
+                          <p className="inventory-scientific">
+                            <bdi dir="auto">{medicine.scientificName}</bdi>
+                          </p>
+                        )}
                       </div>
                       <div className="inventory-actions">
                         <button
@@ -338,23 +415,44 @@ export function InventoryView({ service }: { service: InventoryService }) {
                         >
                           {t('Add batch')}
                         </button>
+                        <button
+                          type="button"
+                          className="inventory-secondary inventory-remove"
+                          disabled={!active || !!editor}
+                          aria-label={t('Remove medicine')}
+                          title={t('Remove medicine')}
+                          aria-busy={removingId === medicine.id}
+                          onClick={(event) => {
+                            setRemoveError('');
+                            setRemoveTarget({
+                              medicine,
+                              trigger: event.currentTarget,
+                            });
+                          }}
+                        >
+                          <Trash2
+                            size={18}
+                            strokeWidth={1.8}
+                            aria-hidden="true"
+                          />
+                        </button>
                       </div>
                       <Indicators values={medicine.indicators} />
                       <dl className="inventory-facts">
                         <div>
                           <dt>{t('Category')}</dt>
-                          <dd>{medicine.category}</dd>
-                        </div>
-                        <div>
-                          <dt>{t('Available quantity')}</dt>
-                          <dd className="numeric-value">
-                            {medicine.availableQuantity}
+                          <dd>
+                            <bdi dir="auto">{medicine.category}</bdi>
                           </dd>
                         </div>
                         <div>
-                          <dt>{t('Reorder threshold')}</dt>
-                          <dd className="numeric-value">
-                            {medicine.reorderThreshold}
+                          <dt>{t('Available quantity')}</dt>
+                          <dd className="numeric-value inventory-stock-quantity">
+                            <bdi dir="ltr">
+                              {quantityFormat.format(
+                                medicine.availableQuantity,
+                              )}
+                            </bdi>
                           </dd>
                         </div>
                       </dl>
@@ -374,33 +472,37 @@ export function InventoryView({ service }: { service: InventoryService }) {
                           <ul className="inventory-batch-list">
                             {medicine.batches.map((batch) => (
                               <li key={batch.id}>
-                                <h4>
-                                  {t('Batch')}{' '}
-                                  <bdi dir="ltr" className="numeric-value">
-                                    {batch.batchNumber}
-                                  </bdi>
-                                </h4>
-                                <button
-                                  type="button"
-                                  className="inventory-secondary"
-                                  disabled={!active || !!editor}
-                                  onClick={(event) =>
-                                    openEditor(
-                                      { kind: 'batch', medicine, batch },
-                                      event.currentTarget,
-                                    )
-                                  }
-                                >
-                                  {t('Edit batch')}
-                                </button>
-                                {batch.indicators.length > 0 && (
-                                  <Indicators values={batch.indicators} />
-                                )}
+                                <div className="inventory-batch-heading">
+                                  <h4>
+                                    {t('Batch')}{' '}
+                                    <bdi dir="ltr" className="numeric-value">
+                                      {batch.batchNumber}
+                                    </bdi>
+                                  </h4>
+                                  {batch.indicators.length > 0 && (
+                                    <Indicators values={batch.indicators} />
+                                  )}
+                                  <button
+                                    type="button"
+                                    className="inventory-secondary"
+                                    disabled={!active || !!editor}
+                                    onClick={(event) =>
+                                      openEditor(
+                                        { kind: 'batch', medicine, batch },
+                                        event.currentTarget,
+                                      )
+                                    }
+                                  >
+                                    {t('Edit batch')}
+                                  </button>
+                                </div>
                                 <dl className="inventory-facts">
                                   <div>
                                     <dt>{t('Quantity')}</dt>
-                                    <dd className="numeric-value">
-                                      {batch.quantity}
+                                    <dd className="numeric-value inventory-batch-quantity">
+                                      <bdi dir="ltr">
+                                        {quantityFormat.format(batch.quantity)}
+                                      </bdi>
                                     </dd>
                                   </div>
                                   <div>
@@ -410,18 +512,26 @@ export function InventoryView({ service }: { service: InventoryService }) {
                                         dateTime={batch.expiryDate}
                                         dir="ltr"
                                       >
-                                        {batch.expiryDate}
+                                        {expiryFormat.format(
+                                          new Date(
+                                            batch.expiryDate + 'T12:00:00Z',
+                                          ),
+                                        )}
                                       </time>
                                     </dd>
                                   </div>
                                   <div>
                                     <dt>{t('Storage location')}</dt>
-                                    <dd>{batch.storageLocation}</dd>
+                                    <dd>
+                                      <bdi dir="auto">
+                                        {batch.storageLocation}
+                                      </bdi>
+                                    </dd>
                                   </div>
                                   <div>
                                     <dt>{t('Unit cost')}</dt>
-                                    <dd dir="ltr" className="numeric-value">
-                                      {batch.unitCost}
+                                    <dd className="numeric-value">
+                                      <bdi dir="ltr">{batch.unitCost}</bdi>
                                     </dd>
                                   </div>
                                   <div>

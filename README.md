@@ -4,6 +4,8 @@ Pharmacy Management & Public Medicine Search - Weekly Mini Project 04, Team 2.
 
 ## Current implementation
 
+Staff sign-in survives page refresh within the same browser tab. Only the access token is saved in tab session storage; `/auth/me` revalidates it and reads the current account before protected screens load. Sign-out or expiry clears it. The backend's one-hour JWT lifetime still applies; no passwords are stored. See [session behavior](apps/web/src/features/auth/README.md).
+
 Medicine search currently opens in an explicitly labeled demo mode with ten sample medicines and five fictional Salamiyah pharmacies. Brand/scientific names in Arabic and English and simulated duty filtering work without a database. “Use live search” switches to the persisted backend; API errors never trigger a demo fallback. These sample results are separate from the published November duty roster and do not change pharmacy accounts or inventory.
 
 The frontend includes shared routing/navigation, staff sign-in requests, owner pharmacy/account/subscription forms, and inventory browsing plus medicine/batch create/edit forms. Creating a medicine now saves its first batch atomically in the same request. Scientific name is optional; the reorder-threshold field is hidden (new medicines use zero, existing thresholds are preserved). Expiry uses localized day/month/year selectors. Real routes send requests using the agreed API contracts. Development-only owner/inventory previews use explicitly synthetic in-memory data and reset on refresh; they never replace failed API responses.

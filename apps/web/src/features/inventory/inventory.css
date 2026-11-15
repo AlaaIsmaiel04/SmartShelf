@@ -2,6 +2,138 @@
   display: grid;
   gap: 24px;
 }
+
+/* Native modal focus/inert behavior, with SmartShelf's own presentation. */
+.medicine-remove-dialog {
+  box-sizing: border-box;
+  width: min(460px, calc(100% - 32px));
+  max-height: calc(100svh - 32px);
+  overflow-y: auto;
+  margin: auto;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  color: var(--foreground);
+  font: inherit;
+  text-align: start;
+}
+.medicine-remove-dialog[open] {
+  animation: medicine-dialog-enter 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.medicine-remove-dialog::backdrop {
+  background: rgb(12 25 20 / 48%);
+  backdrop-filter: blur(4px);
+}
+.medicine-remove-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.medicine-remove-symbol {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border-radius: 12px;
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+.medicine-remove-heading h2 {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.5;
+}
+.medicine-remove-dialog p {
+  margin-block: 12px;
+  font-size: 14px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+.medicine-remove-dialog .medicine-remove-name {
+  font-size: 18px;
+  font-weight: 700;
+  margin-block: 20px 8px;
+}
+.medicine-remove-dialog .medicine-remove-batches {
+  font-size: 12px;
+  color: var(--muted);
+  margin-block: 8px 20px;
+}
+.medicine-remove-dialog .medicine-remove-error {
+  padding: 12px;
+  color: var(--danger);
+  background: var(--danger-soft);
+  border-radius: 8px;
+}
+.medicine-remove-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-block-start: 16px;
+  border-top: 1px solid var(--border);
+}
+.medicine-remove-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.medicine-remove-actions button:not(:disabled):hover {
+  background: var(--row-hover);
+}
+.medicine-remove-actions .medicine-remove-confirm {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: var(--surface);
+}
+.medicine-remove-actions .medicine-remove-confirm:not(:disabled):hover {
+  background: var(--danger);
+  filter: brightness(0.9);
+}
+.medicine-remove-actions button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+.medicine-remove-actions button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+@keyframes medicine-dialog-enter {
+  from {
+    opacity: 0.7;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (max-width: 480px) {
+  .medicine-remove-dialog {
+    padding: 20px;
+  }
+  .medicine-remove-actions button {
+    flex: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .medicine-remove-dialog[open] {
+    animation: none;
+  }
+}
 .inventory-page > header {
   margin-bottom: 8px;
 }
@@ -48,9 +180,9 @@
 .inventory-row {
   display: grid;
   grid-template-columns:
-    minmax(180px, 1.5fr) minmax(90px, 0.8fr) minmax(65px, 0.6fr)
-    minmax(65px, 0.6fr) minmax(120px, 1fr) minmax(110px, 0.9fr);
-  gap: 16px;
+    minmax(220px, 2fr) minmax(90px, 0.8fr) minmax(80px, 0.6fr)
+    minmax(150px, 1.2fr) minmax(180px, 1.4fr);
+  gap: 24px;
   align-items: center;
 }
 .inventory-table-head {
@@ -73,6 +205,8 @@
   grid-column: 1;
   grid-row: 1;
   min-width: 0;
+  padding-inline-end: 12px;
+  overflow-wrap: anywhere;
 }
 .inventory-identity h3 {
   font-size: 14px;
@@ -84,7 +218,7 @@
   margin: 0;
 }
 .inventory-row > .inventory-actions {
-  grid-column: 6;
+  grid-column: 5;
   grid-row: 1;
   display: grid;
   gap: 8px;
@@ -104,7 +238,7 @@
   margin: 8px 0;
 }
 .inventory-row > .inventory-badges {
-  grid-column: 5;
+  grid-column: 4;
   grid-row: 1;
 }
 .inventory-badge {
@@ -145,9 +279,6 @@
 .inventory-row > .inventory-facts > div:nth-child(2) {
   grid-column: 3;
 }
-.inventory-row > .inventory-facts > div:nth-child(3) {
-  grid-column: 4;
-}
 .inventory-row > .inventory-facts dt {
   position: absolute;
   width: 1px;
@@ -182,6 +313,85 @@
   border-top: 1px solid var(--border);
   padding: 20px 0 0;
   min-width: 0;
+}
+.inventory-batch-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+}
+.inventory-batch-heading > button {
+  margin-inline-start: auto;
+}
+.app-shell .inventory-batch-heading h4 {
+  margin: 0;
+  font-size: 14px;
+}
+.inventory-batch-heading .inventory-badges {
+  margin: 0;
+}
+.app-shell .inventory-batch-list .inventory-facts {
+  grid-template-columns:
+    minmax(64px, 0.6fr) minmax(140px, 1.2fr) minmax(100px, 1fr)
+    minmax(90px, 0.8fr) minmax(110px, 1fr);
+  gap: 12px 20px;
+  margin-block: 12px 4px;
+}
+.app-shell .inventory-batch-list dt {
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+.app-shell .inventory-batch-list dd,
+.app-shell .inventory-batch-list time {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+.app-shell .inventory-batch-list time {
+  display: inline-block;
+  font-family: inherit;
+}
+.app-shell .inventory-row .inventory-stock-quantity {
+  display: inline-block;
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--foreground);
+}
+.app-shell .inventory-batch-list .inventory-batch-quantity {
+  font-size: 18px;
+  font-weight: 600;
+}
+.app-shell .inventory-identity h3 {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-block: 0 4px;
+}
+.app-shell .inventory-scientific {
+  font-size: 12px;
+  line-height: 1.6;
+}
+.app-shell .inventory-medicines .inventory-row {
+  column-gap: 24px;
+}
+.app-shell .inventory-medicines .inventory-row > .inventory-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) 44px;
+  gap: 8px;
+}
+.app-shell .inventory-row .inventory-actions .inventory-remove {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  min-height: 44px;
+  padding: 8px;
+  color: var(--danger);
+  border-color: var(--border);
+  background: transparent;
+}
+.app-shell .inventory-row .inventory-remove:not(:disabled):hover {
+  background: var(--danger-soft);
+  border-color: var(--danger);
 }
 .inventory-batch-list h4 {
   display: inline-block;
@@ -335,14 +545,129 @@
   background: var(--success-soft);
   font-size: 12px;
 }
+
+/* Dense entry form: medicine identity, stock values, then storage details. */
+.app-shell .inventory-editor {
+  max-width: 880px;
+  padding: 20px;
+  container-type: inline-size;
+}
+.app-shell .inventory-editor h3 {
+  font-size: 20px;
+  margin-block: 0 16px;
+}
+.app-shell .inventory-editor .inventory-form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-block: 0 12px;
+}
+.inventory-medicine-fields,
+.inventory-batch-fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+  gap: 12px 16px;
+}
+.app-shell
+  .inventory-editor
+  :is(.inventory-medicine-fields, .inventory-batch-fields)
+  > label {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  font-size: 13px;
+}
+.app-shell .inventory-editor :is(input, select) {
+  min-height: 44px;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+.app-shell .inventory-editor .inventory-form-section-title {
+  margin: 4px 0 0;
+  padding-block-start: 12px;
+  font-size: 15px;
+}
+.inventory-batch-fields .expiry-date-control {
+  grid-column: span 2;
+}
+.app-shell .inventory-editor .expiry-date-control legend {
+  margin-block-end: 6px;
+  font-size: 13px;
+}
+.inventory-editor .expiry-date-control small {
+  font-size: 11px;
+  line-height: 1.6;
+  margin-block-start: 4px;
+}
+.inventory-editor .expiry-date-parts {
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr) minmax(0, 1fr);
+}
+.inventory-optional-fields {
+  border-block-end: 1px solid var(--border);
+  padding-block-end: 8px;
+  font-size: 13px;
+}
+.inventory-optional-fields summary {
+  cursor: pointer;
+  min-height: 44px;
+  display: list-item;
+  align-content: center;
+  color: var(--primary);
+  font-weight: 600;
+}
+.inventory-optional-fields summary:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.inventory-optional-fields > label {
+  display: grid;
+  gap: 6px;
+  max-width: 400px;
+  margin-block: 4px 8px;
+}
+.app-shell .inventory-editor .inventory-editor-note {
+  padding: 0;
+  margin-block: 8px 12px;
+  background: transparent;
+  border-radius: 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+.app-shell .inventory-editor .inventory-actions {
+  margin-block: 12px 0;
+}
+.app-shell .inventory-editor .inventory-actions button {
+  min-height: 44px;
+  padding: 8px 20px;
+  font-size: 14px;
+}
+@container (max-width: 560px) {
+  .inventory-medicine-fields,
+  .inventory-batch-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .inventory-medicine-fields > label:first-child,
+  .inventory-batch-fields .inventory-batch-number,
+  .inventory-batch-fields .inventory-storage-field {
+    grid-column: 1 / -1;
+  }
+}
+@container (max-width: 360px) {
+  .inventory-medicine-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
 @media (max-width: 1180px) {
   .inventory-table-head {
     display: none;
   }
   .inventory-row {
     grid-template-columns:
-      minmax(160px, 1.3fr) minmax(75px, 0.7fr) minmax(70px, 0.5fr)
-      minmax(70px, 0.5fr) minmax(110px, 0.8fr);
+      minmax(200px, 1.8fr) minmax(80px, 0.8fr) minmax(80px, 0.6fr)
+      minmax(140px, 1fr);
   }
   .inventory-row > .inventory-actions {
     grid-column: 1/-1;
@@ -367,6 +692,9 @@
   }
 }
 @media (max-width: 1050px) {
+  .app-shell .inventory-batch-list .inventory-facts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
   .inventory-medicines {
     border: 0;
     background: none;
@@ -399,7 +727,7 @@
   .inventory-row > .inventory-facts {
     order: 2;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
     margin: 12px 0 20px;
   }
@@ -419,6 +747,13 @@
   }
 }
 @media (max-width: 760px) {
+  .app-shell .inventory-batch-list .inventory-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .inventory-batch-heading > .inventory-badges {
+    flex-basis: 100%;
+    order: 1;
+  }
   .inventory-filters label {
     flex-basis: 100%;
   }

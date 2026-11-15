@@ -243,6 +243,12 @@ export function InventoryPreviewPage() {
           );
         return { items, total: items.length, subscriptionStatus };
       },
+      async removeMedicine(id) {
+        await beforeSave();
+        writable();
+        findMedicine(id);
+        data.current = data.current.filter((medicine) => medicine.id !== id);
+      },
       async createMedicine(input) {
         await beforeSave();
         writable();

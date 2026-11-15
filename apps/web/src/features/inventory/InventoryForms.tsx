@@ -133,6 +133,7 @@ export function InventoryForm({
     name: keyof typeof fields,
     label: MessageKey,
     options: {
+      className?: string;
       type?: string;
       immutable?: boolean;
       optional?: boolean;
@@ -141,7 +142,7 @@ export function InventoryForm({
     } = {},
   ) {
     return (
-      <label htmlFor={`stock-${name}`}>
+      <label className={options.className} htmlFor={`stock-${name}`}>
         {t(label)}
         {options.optional ? t(' (optional)') : ''}
         {options.immutable ? t(' (read-only)') : ''}
@@ -201,11 +202,11 @@ export function InventoryForm({
             {t('{title} details', { title: translateMessage(title) })}
           </legend>
           {editor.kind === 'medicine' ? (
-            <>
+            <div className="inventory-medicine-fields">
               {field('displayName', 'Display name')}
               {field('scientificName', 'Scientific name', { optional: true })}
               {field('category', 'Category')}
-            </>
+            </div>
           ) : null}
           {(combined || editor.kind === 'batch') && (
             <>
@@ -214,23 +215,42 @@ export function InventoryForm({
                   {t('First batch details')}
                 </h4>
               )}
-              {field('batchNumber', 'Batch number', { immutable: !!batch })}
-              {field('quantity', 'Quantity', { type: 'number', integer: true })}
-              <ExpiryDateField
-                value={fields.expiryDate}
-                onChange={(expiryDate) =>
-                  setFields((previous) => ({ ...previous, expiryDate }))
-                }
-              />
-              {field('storageLocation', 'Storage location')}
-              {field('unitCost', 'Unit purchase cost', {
-                type: 'number',
-                immutable: !!batch,
-              })}
-              {field('barcode', 'Barcode text', {
-                immutable: !!batch,
-                optional: true,
-              })}
+              <div className="inventory-batch-fields">
+                {field('batchNumber', 'Batch number', {
+                  immutable: !!batch,
+                  className: 'inventory-batch-number',
+                })}
+                {field('quantity', 'Quantity', {
+                  type: 'number',
+                  integer: true,
+                })}
+                {field('unitCost', 'Unit purchase cost', {
+                  type: 'number',
+                  immutable: !!batch,
+                })}
+                <ExpiryDateField
+                  value={fields.expiryDate}
+                  onChange={(expiryDate) =>
+                    setFields((previous) => ({ ...previous, expiryDate }))
+                  }
+                />
+                {field('storageLocation', 'Storage location', {
+                  className: 'inventory-storage-field',
+                })}
+              </div>
+              <details
+                className="inventory-optional-fields"
+                open={fields.barcode.trim() ? true : undefined}
+              >
+                <summary>
+                  {t('Barcode text')}
+                  {t(' (optional)')}
+                </summary>
+                {field('barcode', 'Barcode text', {
+                  immutable: !!batch,
+                  optional: true,
+                })}
+              </details>
             </>
           )}
         </fieldset>
@@ -257,7 +277,9 @@ export function InventoryForm({
               ? t('Saving…')
               : editing
                 ? t('Save changes')
-                : translateMessage(title)}
+                : combined
+                  ? t('Add medicine')
+                  : translateMessage(title)}
           </button>
           <button
             type="button"
