@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  HttpCode,
   Param,
   ParseUUIDPipe,
   Patch,
@@ -17,6 +19,7 @@ import {
   ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
+  ApiNoContentResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
@@ -93,6 +96,24 @@ export class InventoryController {
     @Body() dto: MedicineDto,
   ) {
     return this.inventory.updateMedicine(request.actor, id, dto);
+  }
+
+  @Delete('medicines/:id')
+  @HttpCode(204)
+  @UseGuards(OwnershipGuard, ActiveSubscriptionGuard)
+  @OwnResource('medicine')
+  @ApiOperation({
+    summary:
+      'Permanently remove an own-pharmacy medicine and all its batches atomically',
+  })
+  @ApiNoContentResponse({
+    description: 'Medicine and batches removed; inventory timestamp updated.',
+  })
+  removeMedicine(
+    @Req() request: ActorRequest,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
+    return this.inventory.removeMedicine(request.actor, id);
   }
 
   @Post('medicines/:id/batches')

@@ -16,6 +16,7 @@ export interface InventoryService {
     signal?: AbortSignal,
   ) => Promise<InventoryResponse>;
   createMedicine: (input: CreateMedicineInput) => Promise<InventoryMedicine>;
+  removeMedicine: (id: string) => Promise<void>;
   updateMedicine: (
     id: string,
     input: MedicineInput,
@@ -52,6 +53,11 @@ export function createInventoryService(
           body: JSON.stringify(input),
         },
       );
+    },
+    removeMedicine(id) {
+      return request<void>(`/pharmacist/medicines/${encodeURIComponent(id)}`, {
+        method: 'DELETE',
+      });
     },
     createBatch(medicineId, input) {
       return request<Batch>(

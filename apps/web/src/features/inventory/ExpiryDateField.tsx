@@ -39,7 +39,7 @@ export function ExpiryDateField({
       <legend>{t('Expiry date')}</legend>
       <div className="expiry-date-parts">
         <label htmlFor="stock-expiry-day">
-          <span>{t('Day')}</span>
+          <span className="visually-hidden">{t('Day')}</span>
           <select
             id="stock-expiry-day"
             value={parts.day}
@@ -57,7 +57,7 @@ export function ExpiryDateField({
           </select>
         </label>
         <label htmlFor="stock-expiry-month">
-          <span>{t('Month')}</span>
+          <span className="visually-hidden">{t('Month')}</span>
           <select
             id="stock-expiry-month"
             value={parts.month}
@@ -76,7 +76,7 @@ export function ExpiryDateField({
           </select>
         </label>
         <label htmlFor="stock-expiry-year">
-          <span>{t('Year')}</span>
+          <span className="visually-hidden">{t('Year')}</span>
           <select
             id="stock-expiry-year"
             value={parts.year}

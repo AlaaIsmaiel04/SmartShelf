@@ -5,6 +5,7 @@ import { Link, Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import type { Role } from '@smartshelf/contracts';
 import { useAuth } from '../features/auth/AuthProvider';
 import { LoginPage } from '../features/auth/LoginPage';
+import { SessionRestoreState } from '../features/auth/SessionRestoreState';
 import { lazy, Suspense } from 'react';
 import { OwnerPharmaciesPage } from '../features/owner/OwnerPharmaciesPage';
 import { InventoryPage } from '../features/inventory/InventoryPage';
@@ -30,7 +31,9 @@ const OwnerPreviewPage = import.meta.env.DEV
   : null;
 
 function RequireRole({ role }: { role: Role }) {
-  const { user } = useAuth();
+  const { user, isRestoring, restoreError } = useAuth();
+
+  if (isRestoring || restoreError) return <SessionRestoreState />;
 
   if (!user) {
     return <Navigate to="/login" replace state={{ signInRequired: true }} />;

@@ -16,6 +16,26 @@ afterEach(() => {
   globalThis.fetch = originalFetch;
 });
 
+test('medicine removal uses scoped DELETE and accepts an empty 204 response', async () => {
+  let calls = 0;
+  globalThis.fetch = async (url, init) => {
+    calls += 1;
+    assert.equal(String(url), '/api/pharmacist/medicines/med%2F1');
+    assert.equal(init?.method, 'DELETE');
+    assert.equal(init?.body, undefined);
+    assert.equal(
+      new Headers(init?.headers).get('Authorization'),
+      'Bearer token',
+    );
+    return new Response(null, { status: 204 });
+  };
+  assert.equal(
+    await createInventoryService('token', () => {}).removeMedicine('med/1'),
+    undefined,
+  );
+  assert.equal(calls, 1);
+});
+
 test('batch PATCH excludes immutable fields even when the caller supplies extra runtime fields', async () => {
   let request: RequestInit | undefined;
   let url: string | undefined;

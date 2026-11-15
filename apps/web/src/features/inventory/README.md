@@ -1,5 +1,11 @@
 # Inventory frontend — Alaa
 
+## Medicine removal
+
+Each medicine row has an accessible trash button labeled Remove medicine. An in-page themed dialog names the medicine and explains that all its batches are permanently removed. Cancel receives initial focus; Tab stays within the dialog, Escape/backdrop/cancel dismiss it before submission, and focus returns to the trigger. Cancelling sends no request. During removal, dismissal and repeat submissions are disabled; errors remain inside the dialog for retry. Success closes it, refreshes inventory and notifies the dashboard. An active subscription is required; the backend independently enforces role and pharmacy ownership.
+
+The list omits reorder-threshold values, separates medicine names from categories, and uses larger quantities and compact labeled batch details. Stored thresholds and indicator calculations are unchanged.
+
 ## Combined medicine and first batch
 
 Add medicine now opens a single form: display name, optional scientific name, category, then batch number, quantity, expiry, storage, unit cost and optional barcode. Saving sends one POST with a nested `initialBatch`; the backend saves both records atomically. The reorder-threshold field is hidden: new medicines send zero and edits preserve the stored threshold. Medicine-only editing and adding later batches remain separate actions.
@@ -15,8 +21,8 @@ remain responsible for authorization, ownership and subscription restrictions.
 
 - Search display/scientific names and select one indicator, then **Search inventory**.
   Search and status combine; **Clear filters** resets both.
-- Show visible medicine count, display/scientific name, category, available quantity,
-  reorder threshold and every returned indicator (including simultaneous indicators).
+- Show visible medicine count, display/scientific name, category, available quantity
+  and every returned indicator (including simultaneous indicators).
 - Expand **Batch details** with mouse or keyboard to see number, quantity, date-only
   expiry, storage, unit cost, optional barcode and batch expiry indicators.
 - Empty medicine lists, unmatched filters and medicines without batches each have

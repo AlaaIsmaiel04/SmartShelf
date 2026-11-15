@@ -4,16 +4,19 @@ import type { FormEvent } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthProvider';
 import { CareSymbol } from '../../components/InterfaceIcon';
+import { SessionRestoreState } from './SessionRestoreState';
 
 export function LoginPage() {
   const { t, translateMessage } = useLanguage();
-  const { user, signIn, sessionNotice } = useAuth();
+  const { user, signIn, sessionNotice, isRestoring, restoreError } = useAuth();
   const location = useLocation();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  if (isRestoring || restoreError) return <SessionRestoreState />;
 
   if (user) {
     return (

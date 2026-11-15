@@ -57,7 +57,10 @@ test(
         },
         ...(body !== undefined ? { body: JSON.stringify(body) } : {}),
       });
-      return { status: response.status, body: await response.json() };
+      return {
+        status: response.status,
+        body: response.status === 204 ? null : await response.json(),
+      };
     }
     const medicineInput = {
       displayName: 'Test Drug',
@@ -841,6 +844,170 @@ test(
           } finally {
             await prisma.$executeRawUnsafe(
               `DROP TRIGGER IF EXISTS "${marker}" ON "Batch"`,
+            );
+            await prisma.$executeRawUnsafe(
+              `DROP FUNCTION IF EXISTS "${marker}"()`,
+            );
+          }
+        },
+      );
+      await t.test(
+        'medicine DELETE enforces auth, pharmacy and active subscription; removes batches and updates dashboard/public stock',
+        async () => {
+          const name = 'Remove ' + randomUUID();
+          const created = await call('POST', '/pharmacist/medicines', a, {
+            ...medicineInput,
+            displayName: name,
+            initialBatch: { ...batchInput, quantity: 7 },
+          });
+          assert.equal(created.status, 201);
+          const id = created.body.id,
+            route = `/pharmacist/medicines/${id}`;
+          assert.equal((await call('DELETE', route)).status, 401);
+          assert.equal((await call('DELETE', route, owner)).status, 403);
+          assert.equal((await call('DELETE', route, b)).status, 404);
+          assert.equal(
+            (await call('DELETE', '/pharmacist/medicines/not-a-uuid', a))
+              .status,
+            400,
+          );
+          assert.equal(
+            (await call('DELETE', `/pharmacist/medicines/${randomUUID()}`, a))
+              .status,
+            404,
+          );
+          const original = await prisma.subscription.findUniqueOrThrow({
+            where: { pharmacyId: pharmacyIds[0] },
+          });
+          const timestamp = (
+            await prisma.pharmacy.findUniqueOrThrow({
+              where: { id: pharmacyIds[0] },
+            })
+          ).inventoryUpdatedAt?.getTime();
+          try {
+            for (const data of [
+              {
+                suspended: true,
+                startDate: original.startDate,
+                endDate: original.endDate,
+              },
+              {
+                suspended: false,
+                startDate: parseCalendarDate(addCalendarDays(today, -10)),
+                endDate: parseCalendarDate(addCalendarDays(today, -1)),
+              },
+              {
+                suspended: false,
+                startDate: parseCalendarDate(addCalendarDays(today, 1)),
+                endDate: parseCalendarDate(addCalendarDays(today, 10)),
+              },
+            ]) {
+              await prisma.subscription.update({
+                where: { pharmacyId: pharmacyIds[0] },
+                data,
+              });
+              assert.equal((await call('DELETE', route, a)).status, 403);
+            }
+            await prisma.subscription.delete({
+              where: { pharmacyId: pharmacyIds[0] },
+            });
+            assert.equal((await call('DELETE', route, a)).status, 403);
+          } finally {
+            await prisma.subscription.upsert({
+              where: { pharmacyId: pharmacyIds[0] },
+              create: original,
+              update: {
+                startDate: original.startDate,
+                endDate: original.endDate,
+                suspended: original.suspended,
+              },
+            });
+          }
+          assert.equal(
+            await prisma.batch.count({ where: { medicineId: id } }),
+            1,
+          );
+          assert.equal(
+            (
+              await prisma.pharmacy.findUniqueOrThrow({
+                where: { id: pharmacyIds[0] },
+              })
+            ).inventoryUpdatedAt?.getTime(),
+            timestamp,
+          );
+          const dashboardBefore = (
+            await call('GET', '/pharmacist/dashboard', a)
+          ).body;
+          const publicPath = '/public/medicines?q=' + encodeURIComponent(name);
+          assert.equal((await call('GET', publicPath)).body.items.length, 1);
+          const removed = await call('DELETE', route, a);
+          assert.equal(removed.status, 204);
+          assert.equal(removed.body, null);
+          assert.equal(await prisma.medicine.count({ where: { id } }), 0);
+          assert.equal(
+            await prisma.batch.count({ where: { medicineId: id } }),
+            0,
+          );
+          assert.ok(
+            (
+              await prisma.pharmacy.findUniqueOrThrow({
+                where: { id: pharmacyIds[0] },
+              })
+            ).inventoryUpdatedAt!.getTime() > timestamp!,
+          );
+          const dashboardAfter = (await call('GET', '/pharmacist/dashboard', a))
+            .body;
+          assert.equal(
+            dashboardAfter.totalMedicines,
+            dashboardBefore.totalMedicines - 1,
+          );
+          assert.equal((await call('GET', publicPath)).body.items.length, 0);
+          assert.equal((await call('DELETE', route, a)).status, 404);
+        },
+      );
+      await t.test(
+        'failed medicine deletion rolls back batches and inventory timestamp',
+        async () => {
+          const marker = 'remove_' + randomUUID().replaceAll('-', '');
+          const created = await call('POST', '/pharmacist/medicines', a, {
+            ...medicineInput,
+            displayName: marker,
+            initialBatch: batchInput,
+          });
+          assert.equal(created.status, 201);
+          const id = created.body.id;
+          const before = (
+            await prisma.pharmacy.findUniqueOrThrow({
+              where: { id: pharmacyIds[0] },
+            })
+          ).inventoryUpdatedAt?.getTime();
+          await prisma.$executeRawUnsafe(
+            `CREATE FUNCTION "${marker}"() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN IF OLD."displayName" = '${marker}' THEN RAISE EXCEPTION 'test deletion rejection'; END IF; RETURN OLD; END; $$`,
+          );
+          try {
+            await prisma.$executeRawUnsafe(
+              `CREATE TRIGGER "${marker}" BEFORE DELETE ON "Medicine" FOR EACH ROW EXECUTE FUNCTION "${marker}"()`,
+            );
+            assert.equal(
+              (await call('DELETE', `/pharmacist/medicines/${id}`, a)).status,
+              500,
+            );
+            assert.equal(await prisma.medicine.count({ where: { id } }), 1);
+            assert.equal(
+              await prisma.batch.count({ where: { medicineId: id } }),
+              1,
+            );
+            assert.equal(
+              (
+                await prisma.pharmacy.findUniqueOrThrow({
+                  where: { id: pharmacyIds[0] },
+                })
+              ).inventoryUpdatedAt?.getTime(),
+              before,
+            );
+          } finally {
+            await prisma.$executeRawUnsafe(
+              `DROP TRIGGER IF EXISTS "${marker}" ON "Medicine"`,
             );
             await prisma.$executeRawUnsafe(
               `DROP FUNCTION IF EXISTS "${marker}"()`,

@@ -4,6 +4,8 @@
 
 These are browser page URLs. Backend endpoints start with `/api` and are listed separately in API-CONTRACT.md.
 
+Protected routes wait for server validation of a saved tab session after refresh before redirecting or rendering private screens. Temporary restoration failures provide retry/sign-out actions and preserve the requested URL; invalid or expired sessions return to sign-in.
+
 | Browser path                                 | Screen                                                   | Frontend owner | Intended access          |
 | -------------------------------------------- | -------------------------------------------------------- | -------------- | ------------------------ |
 | `/`                                          | Welcome page linking search, directory and staff sign-in | Alaa           | Public, no sign-in       |
