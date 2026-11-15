@@ -1,5 +1,5 @@
 import { useLanguage } from '../features/preferences/LanguageProvider';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useAuth } from '../features/auth/AuthProvider';
@@ -7,12 +7,59 @@ import { LanguageControl } from '../features/preferences/LanguageControl';
 import { ThemeControl } from '../features/preferences/ThemeControl';
 import { InterfaceIcon } from './InterfaceIcon';
 import type { InterfaceIconName } from './InterfaceIcon';
+import logo from '../assets/smartshelf-linked-ss.png';
 
 export function Brand() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const id = useId().replaceAll(':', '');
+  const artwork = (symbol: boolean) => {
+    const filterId = `brand-${id}-${symbol ? 'symbol' : 'full'}`;
+    return (
+      <svg
+        className={`brand-logo brand-logo-${symbol ? 'symbol' : 'full'}`}
+        viewBox={symbol ? '104 164 488 396' : '104 164 1968 396'}
+        aria-hidden="true"
+        focusable="false"
+      >
+        <defs>
+          <filter id={filterId} colorInterpolationFilters="sRGB">
+            {/* Reverse botanical green to cream while retaining the gold accent. */}
+            <feColorMatrix
+              type="matrix"
+              values="-0.077 0 0 0 1.009 -0.247 0 0 0 1.024 -0.702 0 0 0 1.064 0 0 0 1 0"
+            />
+          </filter>
+        </defs>
+        <image
+          className="brand-on-light"
+          href={logo}
+          width="2172"
+          height="724"
+        />
+        <image
+          className="brand-on-dark"
+          href={logo}
+          width="2172"
+          height="724"
+          filter={`url(#${filterId})`}
+        />
+      </svg>
+    );
+  };
   return (
-    <Link to="/" className="brand" aria-label={t('SmartShelf home')} dir="ltr">
-      <span>SmartShelf</span>
+    <Link
+      to="/"
+      className={`brand${language === 'ar' ? ' brand-arabic' : ''}`}
+      aria-label={t('SmartShelf home')}
+      dir={language === 'ar' ? 'rtl' : 'ltr'}
+    >
+      {language === 'en' && artwork(false)}
+      {artwork(true)}
+      {language === 'ar' && (
+        <span className="brand-arabic-wordmark" lang="ar">
+          سمارت شيلف
+        </span>
+      )}
     </Link>
   );
 }
@@ -190,7 +237,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             }}
           >
             <div className="drawer-heading">
-              <span>SmartShelf</span>
+              <Brand />
               <button
                 type="button"
                 className="drawer-close"

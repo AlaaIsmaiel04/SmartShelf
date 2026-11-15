@@ -14,6 +14,7 @@ import './components/workspace.css';
 import './components/public-header.css';
 import './visual-language.css';
 import './compact.css';
+import './components/brand.css';
 import { LanguageProvider } from './features/preferences/LanguageProvider';
 import { ThemeProvider } from './features/preferences/ThemeProvider';
 import {

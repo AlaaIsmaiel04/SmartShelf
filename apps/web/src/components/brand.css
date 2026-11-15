@@ -1,0 +1,148 @@
+.app-shell .brand {
+  flex-shrink: 0;
+  min-height: 44px;
+  gap: 0;
+  line-height: 1;
+}
+.app-shell .brand .brand-logo {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  overflow: hidden;
+}
+.app-shell .brand .brand-logo-full {
+  display: block;
+  width: 208px;
+  height: 44px;
+  max-width: 100%;
+  flex-shrink: 1;
+}
+.app-shell .brand .brand-logo-symbol,
+.brand-on-dark {
+  display: none;
+}
+.public-shell .app-topbar .brand-on-light,
+.workspace-sidebar .brand-on-light {
+  display: none;
+}
+.public-shell .app-topbar .brand-on-dark,
+.workspace-sidebar .brand-on-dark {
+  display: block;
+}
+.app-shell .workspace-sidebar .sidebar-brand {
+  padding-inline: 0 42px;
+}
+.app-shell .workspace-sidebar .sidebar-brand .brand {
+  justify-content: flex-start;
+}
+.app-shell .workspace-sidebar .brand .brand-logo-full {
+  width: 176px;
+  height: 40px;
+}
+.app-shell .brand:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+.app-shell .brand.brand-arabic {
+  gap: 8px;
+}
+.app-shell .brand-arabic .brand-logo-symbol {
+  display: block;
+  width: 44px;
+  height: 40px;
+  flex: 0 0 44px;
+}
+.brand-arabic-wordmark {
+  font-family: 'Noto Kufi Arabic Variable', sans-serif;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.9;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+.public-shell .app-topbar .brand-arabic-wordmark,
+.workspace-sidebar .brand-arabic-wordmark {
+  color: #fffdf8;
+}
+.workspace-sidebar .brand-arabic .brand-logo-symbol {
+  width: 36px;
+  height: 36px;
+  flex-basis: 36px;
+}
+.workspace-sidebar .brand-arabic-wordmark {
+  font-size: 16px;
+}
+@media (min-width: 761px) {
+  .app-shell.sidebar-is-collapsed .brand-arabic-wordmark {
+    display: none;
+  }
+  .app-shell.sidebar-is-collapsed .sidebar-brand {
+    flex-direction: column;
+    padding: 0;
+    gap: 8px;
+  }
+  .app-shell.sidebar-is-collapsed .sidebar-brand .brand {
+    display: inline-flex;
+    flex: 0 0 auto;
+    justify-content: center;
+    width: 44px;
+  }
+  .app-shell.sidebar-is-collapsed .brand .brand-logo-full {
+    display: none;
+  }
+  .app-shell.sidebar-is-collapsed .brand .brand-logo-symbol {
+    display: block;
+    width: 40px;
+    height: 40px;
+  }
+}
+@media (max-width: 760px) {
+  .workspace-sidebar .sidebar-brand .brand-arabic-wordmark {
+    color: var(--sidebar);
+    font-size: 18px;
+  }
+  :root[data-theme='dark']
+    .workspace-sidebar
+    .sidebar-brand
+    .brand-arabic-wordmark {
+    color: #fffdf8;
+  }
+  .app-shell .workspace-sidebar .sidebar-brand {
+    padding-inline: 52px 0;
+  }
+  .app-shell .workspace-sidebar .sidebar-brand .brand {
+    justify-content: center;
+  }
+  .workspace-sidebar .sidebar-brand .brand-on-dark {
+    display: none;
+  }
+  .workspace-sidebar .sidebar-brand .brand-on-light {
+    display: block;
+  }
+  :root[data-theme='dark'] .workspace-sidebar .sidebar-brand .brand-on-light {
+    display: none;
+  }
+  :root[data-theme='dark'] .workspace-sidebar .sidebar-brand .brand-on-dark {
+    display: block;
+  }
+  .workspace-drawer .drawer-heading .brand .brand-logo-full {
+    width: 176px;
+    height: 40px;
+  }
+}
+@media (max-width: 600px) {
+  .public-shell .brand-arabic-wordmark {
+    font-size: 18px;
+  }
+  .public-shell .brand.brand-arabic .brand-logo-symbol {
+    width: 36px;
+    flex-basis: 36px;
+  }
+  .public-shell .app-topbar .brand .brand-logo-full {
+    width: 168px;
+    height: 40px;
+  }
+}
