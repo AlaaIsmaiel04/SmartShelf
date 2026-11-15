@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/assets/smartshelf-readme.png" alt="SmartShelf — Linked SS logo" width="480">
+</p>
+
 # SmartShelf
 
 **Pharmacy inventory management and public medicine search.**
