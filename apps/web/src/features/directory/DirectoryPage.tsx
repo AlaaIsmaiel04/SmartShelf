@@ -1,7 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLanguage } from '../preferences/LanguageProvider';
 import { CareSymbol } from '../../components/InterfaceIcon';
-import { filterPublishedDuties, publishedDuties } from './duty-schedule';
+import {
+  dutyCalendarDate,
+  filterPublishedDuties,
+  millisecondsUntilDutyMidnight,
+  SERVICE_TIME_ZONE,
+  upcomingDutyDates,
+} from './duty-schedule';
 import '../public-search/public.css';
 import './duty-schedule.css';
 
@@ -10,15 +16,37 @@ export function DirectoryPage() {
   const [date, setDate] = useState('');
   const [query, setQuery] = useState('');
   const [shift, setShift] = useState('');
-  const entries = filterPublishedDuties(date, query, shift);
-  const dates = [...new Set(publishedDuties.map((entry) => entry.date))];
+  const [today, setToday] = useState(() => dutyCalendarDate());
+  useEffect(() => {
+    const refreshDate = () => setToday(dutyCalendarDate());
+    const midnight = window.setTimeout(
+      refreshDate,
+      millisecondsUntilDutyMidnight(),
+    );
+    // Also recover from sleeping tabs, device clock changes and delayed timers.
+    const interval = window.setInterval(refreshDate, 60_000);
+    window.addEventListener('focus', refreshDate);
+    document.addEventListener('visibilitychange', refreshDate);
+    return () => {
+      window.clearTimeout(midnight);
+      window.clearInterval(interval);
+      window.removeEventListener('focus', refreshDate);
+      document.removeEventListener('visibilitychange', refreshDate);
+    };
+  }, [today]);
+  useEffect(() => {
+    if (date && date < today) setDate('');
+  }, [date, today]);
+  const selectedDate = date && date >= today ? date : '';
+  const entries = filterPublishedDuties(selectedDate, query, shift, today);
+  const dates = upcomingDutyDates(today);
   const formatDate = (value: string) =>
     new Intl.DateTimeFormat(language === 'ar' ? 'ar-SY' : 'en-GB', {
       weekday: 'long',
       day: 'numeric',
       month: 'long',
       year: 'numeric',
-      timeZone: 'Asia/Damascus',
+      timeZone: SERVICE_TIME_ZONE,
     }).format(new Date(`${value}T12:00:00+03:00`));
   return (
     <section className="public-page duty-schedule" aria-labelledby="duty-title">
@@ -42,10 +70,10 @@ export function DirectoryPage() {
         <label>
           {t('Duty date')}
           <select
-            value={date}
+            value={selectedDate}
             onChange={(event) => setDate(event.target.value)}
           >
-            <option value="">{t('All published dates')}</option>
+            <option value="">{t('Today and upcoming dates')}</option>
             {dates.map((day) => (
               <option key={day} value={day}>
                 {formatDate(day)}
@@ -84,6 +112,7 @@ export function DirectoryPage() {
         </button>
       </div>
       <p className="public-note">
+        {t('Past duties are hidden automatically using Syria time.')}{' '}
         {t(
           'The notice specifies noon and evening shifts, not exact duty hours. A listing does not confirm that a pharmacy is open now or has a medicine in stock.',
         )}
@@ -91,7 +120,15 @@ export function DirectoryPage() {
       <p role="status">
         {t('Duty entries: {count}', { count: entries.length })}
       </p>
-      {!entries.length && <p>{t('No pharmacies found')}</p>}
+      {!entries.length && (
+        <p>
+          {t(
+            dates.length
+              ? 'No pharmacies found'
+              : 'No upcoming duty schedule has been published.',
+          )}
+        </p>
+      )}
       {dates
         .filter((day) => entries.some((entry) => entry.date === day))
         .map((day) => (
