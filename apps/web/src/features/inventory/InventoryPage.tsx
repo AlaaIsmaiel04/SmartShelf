@@ -16,6 +16,7 @@ import type { InventoryService } from './inventory-api';
 import { ApiRequestError } from '../../lib/api';
 import { InventoryForm } from './InventoryForms';
 import { RemoveMedicineDialog } from './RemoveMedicineDialog';
+import { summarizeBatchStock } from './batch-stock-summary';
 import type { InventoryEditor } from './InventoryForms';
 import {
   notifyInventoryChanged,
@@ -36,18 +37,37 @@ const subscriptionLabels: Record<SubscriptionStatus, string> = {
   NONE: 'No active subscription',
 };
 
-function Indicators({ values }: { values: (Indicator | BatchIndicator)[] }) {
+function Indicators({
+  values,
+  medicine,
+}: {
+  values: (Indicator | BatchIndicator)[];
+  medicine?: InventoryMedicine;
+}) {
   const { t, translateMessage } = useLanguage();
+  const stock = medicine ? summarizeBatchStock(medicine.batches) : null;
+  const mixedStock = !!stock?.expired && stock.usable > 0;
   return (
     <ul className="inventory-badges" aria-label={t('Indicators')}>
       {values.map((value) => (
         <li
           key={value}
-          className={`inventory-badge inventory-badge-${value.toLowerCase()}`}
+          className={`inventory-badge inventory-badge-${value === 'EXPIRED' && mixedStock ? 'expiring_soon' : value.toLowerCase()}`}
         >
-          {translateMessage(indicatorLabels[value])}
+          {value === 'EXPIRED' && stock
+            ? stock.expired > 0
+              ? mixedStock
+                ? t('Expired batches: {count}', { count: stock.expired })
+                : t('All remaining stock is expired')
+              : t('Expired batches')
+            : translateMessage(indicatorLabels[value])}
         </li>
       ))}
+      {mixedStock && stock && (
+        <li className="inventory-badge inventory-badge-healthy">
+          {t('In-stock, unexpired batches: {count}', { count: stock.usable })}
+        </li>
+      )}
     </ul>
   );
 }
@@ -437,7 +457,10 @@ export function InventoryView({ service }: { service: InventoryService }) {
                           />
                         </button>
                       </div>
-                      <Indicators values={medicine.indicators} />
+                      <Indicators
+                        values={medicine.indicators}
+                        medicine={medicine}
+                      />
                       <dl className="inventory-facts">
                         <div>
                           <dt>{t('Category')}</dt>

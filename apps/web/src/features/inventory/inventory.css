@@ -247,7 +247,9 @@
   border-radius: 20px;
   font-size: 10px;
   font-weight: 700;
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  max-width: 100%;
 }
 .inventory-badge-healthy {
   color: var(--success);

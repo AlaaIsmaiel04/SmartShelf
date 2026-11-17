@@ -1,4 +1,7 @@
 export const featureArabic = {
+  'Expired batches: {count}': 'دفعات منتهية الصلاحية: {count}',
+  'All remaining stock is expired': 'كل المخزون المتبقي منتهي الصلاحية',
+  'In-stock, unexpired batches: {count}': 'دفعات صالحة متوفرة: {count}',
   'Restoring your session…': 'جارٍ استعادة جلسة تسجيل الدخول…',
   'Unable to verify your saved session. Check your connection and try again.':
     'تعذر التحقق من جلستك المحفوظة. تحقق من الاتصال وحاول مجدداً.',

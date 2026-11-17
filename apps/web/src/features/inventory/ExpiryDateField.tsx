@@ -11,13 +11,12 @@ export function ExpiryDateField({
   const { t, language } = useLanguage();
   const [year, month, day] = value.split('-');
   const [parts, setParts] = useState({
-    year: year ?? '',
+    year: Number(year) >= 2025 && Number(year) <= 2040 ? year : '',
     month: month ?? '',
     day: day ?? '',
   });
-  const currentYear = new Date().getFullYear();
-  const firstYear = Math.min(currentYear - 20, Number(year) || currentYear);
-  const lastYear = Math.max(currentYear + 20, Number(year) || currentYear);
+  const firstYear = 2025;
+  const lastYear = 2040;
   const days = new Date(
     Date.UTC(Number(parts.year) || 2024, Number(parts.month) || 1, 0),
   ).getUTCDate();
@@ -68,7 +67,7 @@ export function ExpiryDateField({
             {Array.from({ length: 12 }, (_, i) => (
               <option key={i} value={String(i + 1).padStart(2, '0')}>
                 {new Intl.DateTimeFormat(
-                  language === 'ar' ? 'ar-SY' : 'en-GB',
+                  language === 'ar' ? 'ar-EG' : 'en-GB',
                   { month: 'long', timeZone: 'UTC' },
                 ).format(new Date(Date.UTC(2024, i, 1)))}
               </option>
