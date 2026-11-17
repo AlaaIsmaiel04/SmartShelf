@@ -1,4 +1,9 @@
 export const publicArabic = {
+  'Today and upcoming dates': 'اليوم والتواريخ القادمة',
+  'Past duties are hidden automatically using Syria time.':
+    'تُخفى المناوبات السابقة تلقائياً حسب توقيت سوريا.',
+  'No upcoming duty schedule has been published.':
+    'لم يُنشر جدول مناوبات قادم بعد.',
   'Search data source': 'مصدر بيانات البحث',
   'Demo search': 'بحث تجريبي',
   'Live search': 'بحث بالبيانات المسجلة',

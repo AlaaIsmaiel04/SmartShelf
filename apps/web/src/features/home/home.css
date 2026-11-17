@@ -233,6 +233,7 @@
   }
   .entry-access {
     padding: 16px;
+    scroll-margin-block-start: 16px;
   }
   .entry-request-fields {
     grid-template-columns: 1fr;

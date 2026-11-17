@@ -2,6 +2,32 @@
 // Columns are noon (right pair) and evening (left pair); exact hours are not supplied.
 export const SERVICE_AREA = 'سلمية';
 export const SERVICE_TIME_ZONE = 'Asia/Damascus';
+
+export function dutyCalendarDate(now = new Date()): string {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: SERVICE_TIME_ZONE,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(now);
+  const value = (type: string) =>
+    parts.find((part) => part.type === type)!.value;
+  return `${value('year')}-${value('month')}-${value('day')}`;
+}
+
+export function millisecondsUntilDutyMidnight(now = new Date()): number {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: SERVICE_TIME_ZONE,
+    hourCycle: 'h23',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  }).formatToParts(now);
+  const value = (type: string) =>
+    Number(parts.find((part) => part.type === type)!.value);
+  const seconds = value('hour') * 3600 + value('minute') * 60 + value('second');
+  return (86400 - seconds) * 1000 - now.getUTCMilliseconds();
+}
 export type DutyShift = 'noon' | 'evening';
 export interface PublishedDuty {
   date: string;
@@ -129,14 +155,22 @@ export function filterPublishedDuties(
   date: string,
   name: string,
   shift: string,
+  fromDate = '',
 ) {
   const query = name.trim().normalize('NFKC');
   return publishedDuties.filter(
     (entry) =>
+      entry.date >= fromDate &&
       (!date || entry.date === date) &&
       (!shift || entry.shift === shift) &&
       (!query ||
         entry.name.normalize('NFKC').includes(query) ||
         entry.address.normalize('NFKC').includes(query)),
   );
+}
+
+export function upcomingDutyDates(today: string): string[] {
+  return [...new Set(publishedDuties.map((entry) => entry.date))]
+    .filter((date) => date >= today)
+    .sort();
 }

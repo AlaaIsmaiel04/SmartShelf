@@ -1,5 +1,5 @@
 import { ArrowRight, Mail, Pill, Hospital, UserRound } from 'lucide-react';
-import { useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../preferences/LanguageProvider';
 import './home.css';
@@ -11,6 +11,52 @@ export function HomePage() {
   const { t } = useLanguage();
   const [pharmacistOpen, setPharmacistOpen] = useState(false);
   const [requestOpen, setRequestOpen] = useState(false);
+  const accessSection = useRef<HTMLElement>(null);
+  const accessHeading = useRef<HTMLHeadingElement>(null);
+  useEffect(() => {
+    if (!pharmacistOpen || !window.matchMedia('(max-width: 760px)').matches)
+      return;
+    accessHeading.current?.focus({ preventScroll: true });
+    const section = accessSection.current;
+    if (!section) return;
+    const start = window.scrollY;
+    const target = Math.max(
+      0,
+      Math.min(
+        start + section.getBoundingClientRect().top - 16,
+        document.documentElement.scrollHeight - window.innerHeight,
+      ),
+    );
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      window.scrollTo({ top: target, behavior: 'instant' });
+      return;
+    }
+    // Native smooth scrolling can finish abruptly over a short phone viewport.
+    // Use a consistent, gentle glide and let any user interaction interrupt it.
+    const started = performance.now();
+    const duration = 1000;
+    let frame = 0;
+    const cancel = () => window.cancelAnimationFrame(frame);
+    const animate = (now: number) => {
+      const progress = Math.min((now - started) / duration, 1);
+      const eased = (1 - Math.cos(Math.PI * progress)) / 2;
+      window.scrollTo({
+        top: start + (target - start) * eased,
+        behavior: 'instant',
+      });
+      if (progress < 1) frame = window.requestAnimationFrame(animate);
+    };
+    frame = window.requestAnimationFrame(animate);
+    window.addEventListener('touchstart', cancel, { passive: true });
+    window.addEventListener('wheel', cancel, { passive: true });
+    window.addEventListener('keydown', cancel);
+    return () => {
+      cancel();
+      window.removeEventListener('touchstart', cancel);
+      window.removeEventListener('wheel', cancel);
+      window.removeEventListener('keydown', cancel);
+    };
+  }, [pharmacistOpen]);
   const [fields, setFields] = useState({
     name: '',
     pharmacy: '',
@@ -79,12 +125,13 @@ export function HomePage() {
       </div>
       {pharmacistOpen && (
         <section
+          ref={accessSection}
           className="entry-access"
           id="pharmacist-entry"
           aria-labelledby="pharmacist-question"
         >
           <div className="entry-access-heading">
-            <h2 id="pharmacist-question">
+            <h2 id="pharmacist-question" ref={accessHeading} tabIndex={-1}>
               {t('Is your pharmacy already subscribed?')}
             </h2>
             <p>

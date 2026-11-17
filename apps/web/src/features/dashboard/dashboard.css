@@ -84,6 +84,31 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+@media (max-width: 760px) {
+  .app-shell .dashboard-page .attention-list > li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-content: normal;
+    align-items: start;
+    gap: 8px;
+    padding-block: 14px;
+  }
+  .app-shell .dashboard-page .attention-list > li > strong {
+    display: block;
+    line-height: 1.6;
+    text-align: start;
+  }
+  .app-shell .dashboard-page .attention-list .pharmacist-badges {
+    justify-content: flex-start;
+    gap: 6px;
+  }
+  .app-shell .dashboard-page .attention-list .pharmacist-badges li {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.6;
+  }
+}
 @media (max-width: 480px) {
   .app-shell .dashboard-page .dashboard-summary {
     gap: 8px;
