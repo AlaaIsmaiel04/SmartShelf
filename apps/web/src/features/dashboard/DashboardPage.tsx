@@ -101,7 +101,10 @@ export default function DashboardPage() {
                 )}
               </p>
             )}
-            <Link className="button dashboard-inventory-link" to="/pharmacist/inventory">
+            <Link
+              className="button dashboard-inventory-link"
+              to="/pharmacist/inventory"
+            >
               {t('Open inventory')}
             </Link>
           </section>
@@ -139,7 +142,9 @@ export default function DashboardPage() {
               <ul className="attention-list">
                 {data.attentionItems.map((item) => (
                   <li key={item.medicineId}>
-                    <strong dir="ltr">{item.displayName}</strong>
+                    <strong>
+                      <bdi>{item.displayName}</bdi>
+                    </strong>
                     <ul
                       className="pharmacist-badges"
                       aria-label={t('Indicators')}
