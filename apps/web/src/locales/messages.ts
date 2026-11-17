@@ -51,7 +51,7 @@ export const arabic = {
     'أدر صيدليتك وتابع مخزونك وساعد الناس في العثور على الدواء الذي يحتاجونه.',
   'For owners and pharmacists. Public medicine search needs no account.':
     'للمالك والصيادلة. البحث العام عن الأدوية لا يحتاج إلى حساب.',
-  'Staff sign in': 'تسجيل دخول الموظفين',
+  'Staff sign in': 'تسجيل دخول الصيدلي',
   'Sign in to manage your workspace.': 'سجّل الدخول لإدارة مساحة عملك.',
   'Please sign in to open your workspace.':
     'يرجى تسجيل الدخول لفتح مساحة عملك.',
